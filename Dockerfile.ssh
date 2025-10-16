@@ -1,0 +1,31 @@
+FROM python:3.11-slim
+
+# Install Node.js, npm and OpenSSH
+RUN apt-get update && \
+    apt-get install -y curl && \
+    curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
+    apt-get install -y nodejs openssh-server sudo && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Django
+RUN pip install --no-cache-dir django
+
+# Set working directory
+WORKDIR /piscine_django
+
+# Create a non-root user for SSH access
+RUN useradd -m -s /bin/bash dev && \
+    echo 'dev:dev' | chpasswd && \
+    adduser dev sudo || true && \
+    mkdir -p /var/run/sshd && \
+    sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config && \
+    sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+
+EXPOSE 22
+
+
+# Start sshd in foreground so the container keeps running
+CMD ["/usr/sbin/sshd", "-D"]
+
+# run docker run -d --name piscine_django -p 2222:22 -v $(pwd):/home/dev/piscine_django piscine_django_ssh
