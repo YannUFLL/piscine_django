@@ -48,10 +48,9 @@ if __name__ == "__main__":
     tempword = None
     for word in arg.replace(",", " ").split():
         cword = word.capitalize()
-        if word == ',':
-            continue
         if cword == "New":
             tempword = "New"
+            continue
         if tempword == "New" and cword == "Jersey":
             cword = "New Jersey"
             tempword = None
