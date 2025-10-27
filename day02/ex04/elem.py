@@ -12,7 +12,11 @@ class Text(str):
         """
         Do you really need a comment to understand this method?..
         """
-        return super().__str__().replace('\n', '\n<br />\n')
+        return (super().__str__().replace('&', '&amp;')
+                                .replace('<', '&lt;')
+                                .replace('>', '&gt;')
+                                .replace('"', '&quot;')
+                                .replace('\n', '\n<br />\n'))
 
 
 class Elem:
@@ -20,7 +24,7 @@ class Elem:
     Elem will permit us to represent our HTML elements.
     """
     class ValidationError(Exception):
-        def __init__():
+        def __init__(self):
             super().__init__("Error: wrong element type in content")
 
     def __init__(self, tag='div', attr={}, content=None, tag_type='double'):
@@ -48,11 +52,16 @@ class Elem:
         result = ""
         if self.tag_type == 'double':
             result += f"<{self.tag}{self.__make_attr()}>"
-            result +=  self.__make_content()
-            result += f"\n</{self.tag}>"
+            content = ""
+            content = '\n  '.join(self.__make_content().rstrip('\n').split('\n'))
+            result += content
+            if content == '':
+                result += f"</{self.tag}>"
+            else: 
+                result += f"\n</{self.tag}>"
         elif self.tag_type == 'simple':
-            result += f"\n<{self.tag}{self.__make_attr()}>"
-        return result
+            result += f"<{self.tag}{self.__make_attr()}>"
+        return result 
 
     def __make_attr(self):
         """
@@ -72,7 +81,8 @@ class Elem:
             return ''
         result = '\n'
         for elem in self.content:
-            result += "  " + str(elem) + "\n"
+            result += str(elem) 
+            result += '\n'
         return result
 
     def add_content(self, content):
@@ -105,3 +115,9 @@ if __name__ == '__main__':
                     Elem("h1", tag_type="double", content=
                         Text('"Oh no, not again!"')),
                     Elem("img", tag_type="simple", attr={"src":"http://i.imgur.com/pfp3T.jpg"})])]))
+    print(Text(">"))
+    print(Elem())
+    try:
+        Elem(content=1)
+    except Exception as e: 
+        print(type(e) == Elem.ValidationError)
