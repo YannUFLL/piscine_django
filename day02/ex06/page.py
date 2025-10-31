@@ -38,10 +38,15 @@ class Page:
         if isinstance(elements, Text):
             return True
         current_tag = elements.tag
-        rules = self._rules[current_tag]
+        rules = self._rules.get(current_tag)
+        if rules == None:
+            raise (ValueError("Error: tag doesn't exist"))
         if isinstance(elements.content, list):
             for el in elements.content:
-                self._check_one_element(el)
+                if isinstance(el, Elem):
+                    self._check_one_element(el)
+
+            
         elif isinstance(elements.content, Elem):
                 self._check_one_element(elements.content)
         else: 
@@ -51,15 +56,18 @@ class Page:
         allowed = rules.get("allowed")
         if allowed: 
             for child in childs: 
-                if isinstance(child, Elem) and child.tag not in allowed:
+                tag = child.tag if isinstance(child, Elem) else "text" if isinstance(child, Text) else None
+                if tag not in allowed:
                     raise ValueError(f"<{child.tag}> non allowed in <{current_tag}>")
+
                 
         order = rules.get("order")
         if order: 
             pos = 0;
             for child in childs: 
-                if isinstance(child, Elem) and child.tag in order:
-                    if order.index(child.tag) != pos: 
+                child_tag = child.tag if isinstance(child, Elem) else "text" if isinstance(child, Text) else None
+                if tag in order:
+                    if order.index(child_tag) != pos: 
                         raise ValueError(f"<{tag}> wrong order in <{current_tag} need this order <{[tag for tag in order]}>")
                     else:
                         pos += 1
@@ -67,14 +75,15 @@ class Page:
         unique = rules.get("unique")
         if unique : 
             for tag in unique: 
-                q = sum(1 for c in childs if isinstance(c, Elem) and c.tag == tag)
+                q = sum(1 for c in childs if (isinstance(c, Elem) and c.tag == tag) or (isinstance(c, Text) and "text" == tag))
                 if q > 1:
                     raise ValueError(f"<{tag}> non unique in <{current_tag}>")
 
         min = rules.get("min")
-        if min : 
-            for tag, nb in min.items(): 
-                q = sum(1 for c in childs if isinstance(c, Elem) and c.tag == tag)
+        if min :
+            for rule in min:
+                tag, nb = next(iter(rule.items()))
+                q = sum(1 for c in childs if (isinstance(c, Elem) and c.tag == tag) or (isinstance(c, Text) and "text" == tag))
                 if q < nb:
                     raise ValueError(f"<{tag}> non unique in <{current_tag}>")
 
@@ -83,7 +92,7 @@ class Page:
         if at_least :
             q = 0
             for tag in at_least: 
-                q =+ sum(1 for c in childs if isinstance(c, Elem) and c.tag == tag)
+                q =+ sum(1 for c in childs if (isinstance(c, Elem) and c.tag == tag) or (isinstance(c, Text) and "text" == tag))
                 if q == 0:
                     raise ValueError(f"<{tag}> need at least <{[tag for tag in at_least]}>")
 
@@ -93,15 +102,15 @@ class Page:
             q = 0
             for tag in exclusive: 
                 for c in childs:
-                    if isinstance(c, Elem) and c.tag == tag:
+                    if isinstance(c, Elem) and c.tag == tag or isinstance(c, Text) and "text" == tag:
                         q += 1
                         if q > 1:
                             raise ValueError(f"<{tag}> need exclusivly as a child one of: <{[tag for tag in at_least]}>")
     def is_valid(self):
         try:
             self._check_one_element(self.element)
-        except Exception as e:
-            print (e)
+        except ValueError as e:
+            #print (e)
             return (False)
         return (True)
     
@@ -125,12 +134,16 @@ class Page:
                     file.write(self.element)
         except Exception as e: 
             print (e)
+            return (False)
+        return (True)
 
-def verif_page(page, page_title):
-    print(f"\n\n ----- Testing page name: {page_title} ----- \n")
-    print(f"\n --- page html : ----- \n\n {page.display_html()}\n")
-    print(f"\n --- result of validity test: {page.is_valid()}")
-    
+def verif_page(page, page_title, result):
+    v = "\033[32mVALIDATE \u2714\033[0m"
+    x = "\033[31mERROR \u2718\033[0m"
+    print(f"\n\n\033[01m ----- Test: {page_title} ----- {v if result == page.is_valid() else x} \n\033[0m")
+    print(f"\n\033[01mpage html:\n\033[0m")
+    page.display_html()
+    print(f"\n\033[01mis_valid() return value: \033[0m{page.is_valid()}")
 
     
 if __name__ == "__main__":
@@ -142,12 +155,12 @@ if __name__ == "__main__":
                     elem.H1(
                         Text('"Oh no, not again!"')),
                     ])]))
-    print("\n\nTEST ---- page.is_valid() ---- \n")
-    print(page.is_valid())
-    print("\n\nTEST ---- page.display_html() ---- \n")
-    page.display_html()
-    print("\n\nTEST ---- page.write_to_file() ---- \n")
-    page.write_to_file("page.html")
+
+    verif_page(page, "body: valid page", True)
+
+    v = "\033[32mVALIDATE \u2714\033[0m"
+    x = "\033[31mERROR \u2718\033[0m"
+    print(f"\n\n\033[01m ----- Test: write to file ----- {v if page.write_to_file('page.html') else x} \n\033[0m")
 
     body_in_body = Page(elem.Html([
         elem.Head(
@@ -158,7 +171,7 @@ if __name__ == "__main__":
                     Text('"Oh no, not again!"')),
                 ])]))
         
-    verif_page(body_in_body, "body in body")
+    verif_page(body_in_body, "body: another body as child", False)
 
     head_after_body = Page(elem.Html([
         elem.Body([ 
@@ -169,9 +182,9 @@ if __name__ == "__main__":
                 Text('"Hello ground!"'))),
             ])]))
 
-    verif_page(head_after_body, "head after body")
+    verif_page(head_after_body, "head: wrong placement after body", False)
 
-    page_with_wrong_element = Page(elem.Html([
+    wrong_element_tag = Page(elem.Html([
         elem.Body([ 
             elem.H1(
                 Text('"Oh no, not again!"')),
@@ -180,6 +193,147 @@ if __name__ == "__main__":
                 elem.Elem('bad tag'))),
             ])]))
 
-    verif_page(head_after_body, "element with bad tag")
 
+    verif_page(wrong_element_tag, "element: new with bad tag", False)
+
+    wrong_element_child = Page(elem.Html([
+            elem.Head(
+                elem.Title(
+                    Text('"Hello ground!"'))),
+                elem.Body([
+                    elem.Div(elem.Meta()), 
+                    elem.H1(
+                        Text('"Oh no, not again!"')),
+                    ])]))
+
+
+    verif_page(wrong_element_child, "div: div wrong child", False)
+
+    div_inside_P = Page(elem.Html([
+        elem.Head(
+            elem.Title(
+                Text('"Hello ground!"'))),
+            elem.Body([
+                elem.Div(elem.Span(elem.P(Text("Coucou")))),
+                elem.Div(), 
+                elem.H1(
+                    Text('"Oh no, not again!"')),
+                ])]))
+
+
+    verif_page(div_inside_P, "p: good child", True)
+
+    div_inside_P = Page(elem.Html([
+        elem.Head(
+            elem.Title(
+                Text('"Hello ground!"'))),
+            elem.Body([
+                elem.Div(
+                elem.P(elem.Div())),
+                elem.Div(), 
+                elem.H1(
+                    Text('"Oh no, not again!"')),
+                ])]))
+
+
+    verif_page(div_inside_P, "p: wrong child", False)
+
+    div_inside_span = Page(elem.Html([
+        elem.Head(
+            elem.Title(
+                Text('"Hello ground!"'))),
+            elem.Body([
+                elem.Span(elem.Div()), 
+                elem.H1(
+                    Text('"Oh no, not again!"')),
+                ])]))
+
+
+    verif_page(div_inside_span, "span: wrong child", False)
+
+    ul_with_wrong_child = Page(elem.Html([
+        elem.Head(
+            elem.Title(
+                Text('"Hello ground!"'))),
+            elem.Body([
+                elem.Ul(elem.Div()), 
+                elem.H1(
+                    Text('"Oh no, not again!"')),
+                ])]))
+
+
+    verif_page(ul_with_wrong_child, "ul: wrong child", False)
+
+    ul_without_child = Page(elem.Html([
+        elem.Head(
+            elem.Title(
+                Text('"Hello ground!"'))),
+            elem.Body([
+                elem.Ul(), 
+                elem.H1(
+                    Text('"Oh no, not again!"')),
+                ])]))
+
+
+    verif_page(ul_without_child, "ul: no child", False)
+
+    ul_with_good_child = Page(elem.Html([
+        elem.Head(
+            elem.Title(
+                Text('"Hello ground!"'))),
+            elem.Body([
+                elem.Ul(elem.Li()), 
+                elem.H1(
+                    Text('"Oh no, not again!"')),
+                ])]))
+
+
+    verif_page(ul_with_good_child, "good child", True)
+
+    tr_with_wrong_child = Page(elem.Html([
+        elem.Head(
+            elem.Title(
+                Text('"Hello ground!"'))),
+            elem.Body([
+                elem.Table(elem.Tr(elem.Div())), 
+                elem.H1(
+                    Text('"Oh no, not again!"')),
+                ])]))
+
+
+    verif_page(tr_with_wrong_child, "tr: wrong child", False)
+
+    tr_with_exclusive_childs = Page(elem.Html([
+        elem.Head(
+            elem.Title(
+                Text('"Hello ground!"'))),
+            elem.Body([
+                elem.Table(elem.Tr([elem.Th(), elem.Td()])), 
+                elem.H1(
+                    Text('"Oh no, not again!"')),
+                ])]))
+
+    verif_page(tr_with_exclusive_childs, "tr: non exclusive childs", False)
+
+    table_with_wrong_child = Page(elem.Html([
+        elem.Head(
+            elem.Title(
+                Text('"Hello ground!"'))),
+            elem.Body([
+                elem.Table(elem.Div()), 
+                elem.H1(
+                    Text('"Oh no, not again!"')),
+                ])]))
+
+    verif_page(tr_with_exclusive_childs, "table: wrong child", False)
+
+
+
+
+
+
+
+
+
+    
 
