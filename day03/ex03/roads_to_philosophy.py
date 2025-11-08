@@ -1,0 +1,88 @@
+import requests
+import sys
+import json
+from bs4 import BeautifulSoup, Tag
+from html.parser import HTMLParser
+
+
+
+def get_relative_url(url):
+    
+    headers = {
+        "User-Agent": "request_wikipedia.py/1.0 (https://github.com/yannUFLL)"
+    }
+    response = requests.get(url, headers=headers)
+    html = response.text
+    soup = BeautifulSoup(html, "html.parser")
+    content = soup.find(id="mw-content-text")
+    content_direct_child = content.find(class_="mw-parser-output")
+
+    redir = content_direct_child.find(class_="redirectText", recursive=True)
+    if redir: 
+        return (redir.find('a', recursive=True).get("href"))
+
+    child = next(content_direct_child.children)
+    if url == "https://en.wikipedia.org/wiki/Force?redirect=no":
+        print(child.prettify())
+    while child:
+        if getattr(child, "name", None) in ("link", "img"):
+            try:
+                child = next(child.children)
+                continue
+            except StopIteration:
+                child = child.next_element
+                continue
+        if getattr(child, "name", None) == 'p':
+            all_a = child.find_all('a')
+            for a in all_a:
+                href = a["href"] 
+                if not href.startswith("/wiki/"):
+                    continue
+                if ":" in href or "#" in href:
+                    continue 
+                return (href)
+        elif getattr(child, "name", None) == "h2" and child.find_all('h2') != None:
+            return (None)
+        child = child.next_sibling
+    return (None)
+
+def execute():
+
+    if len(sys.argv) != 2:
+        print("Error: you must provide the title of the page")
+        sys.exit(1)
+    
+    first_article = sys.argv[1].replace(' ', '_')
+
+    base_url =  "https://en.wikipedia.org"
+    full_url = f'{base_url}/wiki/{first_article}?redirect=no'
+    first_url = f'{base_url}/wiki/{first_article}'
+    print(full_url)
+    saved_url = []
+    number = 0
+
+    
+    while (1):
+        r_url = get_relative_url(full_url)
+        if r_url == None:
+            print("It leads to a dead end !")
+            sys.exit(0)
+        number += 1
+        full_url = base_url + r_url + "?redirect=no"
+        title = r_url.removeprefix("/wiki/").removesuffix("?redirect=no")
+        if (title == "Philosophy"):
+            print(f"{number} roads from {first_url} to Philosophy")
+            sys.exit(0)
+        if full_url in saved_url: 
+            print("It lead to an infinite loop !")
+            sys.exit(0)
+        print(f"loop nuber : {number}\n")
+        print(f"link : {full_url}\n")
+        saved_url.append(full_url)
+
+    sys.exit(1)
+
+    
+
+if __name__ == "__main__":
+    execute()
