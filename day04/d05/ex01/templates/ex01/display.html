@@ -1,0 +1,50 @@
+{% extends "ex01/base.html" %} 
+
+{% block title %} 
+
+Ex01: Display process of a static page
+
+{% endblock %} 
+
+{% block content %}
+    <h1>Ex01: Display process of a static page</h1>
+
+    <h2>1. URL Resolution</h2>
+    <p>
+        Django starts with the project’s main <code>urls.py</code> file.  
+        It checks the <code>urlpatterns</code> list to find a matching path.  
+        If the URL includes another app through <code>include()</code>, Django trims the matched prefix
+        and continues searching in that app’s <code>urls.py</code>.
+    </p>
+
+    <h2>2. View Execution</h2>
+    <p>
+        Once Django finds the correct route, it calls the corresponding <strong>view function</strong>.  
+        For a static page, the view often uses <code>render()</code> to combine a request with an HTML template.
+    </p>
+
+    <pre><code>def display(request):
+    return render(request, 'ex01/display.html')
+    </code></pre>
+
+    <h2>3. Template Rendering</h2>
+    <p>
+        The <strong>Django template engine</strong> loads the HTML file from the <code>templates/</code> directory.  
+        It processes:
+    </p>
+    <ul>
+        {% verbatim %}
+        <li>variable substitutions <code>{{ variable }}</code>,</li>
+        <li>logic or control structures <code>{% ... %}</code>,</li>
+        <li>and template inheritance or includes.</li>
+        {% endverbatim %}
+
+    </ul>
+    <p>The result is a fully rendered HTML page.</p>
+
+    <h2>4. HTTP Response</h2>
+    <p>
+        Django then wraps the rendered HTML into an <strong>HTTP response</strong> object and sends it back to the client (the browser).  
+        The browser finally interprets the HTML and displays the page.
+    </p>
+{% endblock %} 

@@ -1,0 +1,48 @@
+{% extends "ex01/base.html" %}
+{% load static %}
+
+
+{% block title %}
+Ex01: Template engine
+{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'ex01/style2.css' %}" />
+{% endblock %}
+
+{% block content %}
+{% verbatim %}
+
+<h1>The Template Engine</h1>
+
+<p>
+Django provides an easy way to create HTML templates while following the DRY (Don’t Repeat Yourself) principle.
+Templates help separate the presentation layer from the application logic.
+</p>
+
+<h2>Blocks</h2>
+<p>
+The <code>{% block %}</code> tag defines a replaceable section within a base template.
+It allows child templates to override specific blocks while keeping the rest of the layout unchanged.
+This makes code more reusable and easier to maintain.
+</p>
+
+<h2>Loops</h2>
+<p>
+The <code>{% for item in iterable %}</code> tag is used to loop through data provided in the context.
+All content between <code>{% for %}</code> and <code>{% endfor %}</code> will be repeated once per element in the iterable.
+</p>
+
+<h2>If statements</h2>
+<p>
+The <code>{% if %}</code> tag allows conditional rendering inside a template.
+For example, <code>{% if myvar == 1 %}</code> displays the enclosed content only if the condition is true.
+</p>
+
+<h2>Context variables</h2>
+<p>
+The <code>{{ myvar }}</code> syntax displays the value of a variable passed from the view to the template.
+This is how dynamic data (like user names or messages) appears inside static HTML.
+</p>
+
+{% endverbatim %}
+{% endblock %}
