@@ -10,7 +10,10 @@
     {% endblock %}
   </head>
   <body>
-    {% include 'ex01/nav.html' %} {% block content %}
+    {% block navbar %}
+      {% include 'ex01/nav.html' %} 
+    {% endblock %}
+    {% block content %}
     <p>Default content here.</p>
     {% endblock %}
   </body>

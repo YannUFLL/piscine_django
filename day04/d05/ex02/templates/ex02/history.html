@@ -1,0 +1,20 @@
+{% extends "ex01/base.html" %}
+
+{% block content %}
+    {% block navbar %}
+    {% endblock %}
+<form method="post">
+{% csrf_token %}
+{{ form.as_p }}
+<button type="submit">Send</button>
+</form>
+{% if logs %}
+<ul>
+    {% for log in logs %}
+    <li>
+        {{log}}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

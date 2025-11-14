@@ -1,0 +1,30 @@
+{% extends "ex01/base.html" %}
+
+{% block content %}
+    {% block navbar %}
+    {% endblock %}
+    <table>
+        <tr>
+            <th>
+                black
+            </th>
+             <th>
+                red
+            </th>
+            <th>
+                green
+            </th>
+            <th>
+                blue
+            </th>
+        </tr>
+        {% for colors in shades %}
+        <tr>
+            <td style="height: 40px; width: 80px; background-color: {{colors.black}};"></td>
+            <td style="height: 40px; width: 80px; background-color: {{colors.red}};"></td>
+            <td style="height: 40px; width: 80px; background-color: {{colors.green}};"></td>
+            <td style="height: 40px; width: 80px; background-color: {{colors.blue}};"></td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
