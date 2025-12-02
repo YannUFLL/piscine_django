@@ -1,0 +1,33 @@
+/* Personnalisation générale */
+body {
+    background-color: #f8f9fa; /* Un fond gris très clair */
+}
+
+/* Style de la section d'introduction (Jumbotron/Hero) */
+.hero-section {
+    background-color: #e9ecef; /* Couleur de fond plus douce */
+    color: #343a40; /* Texte foncé pour un bon contraste */
+    border-radius: 0.5rem; /* Coins arrondis */
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); /* Légère ombre */
+}
+
+/* Titres des Tips */
+h5.card-title {
+    color: #007bff; /* Bleu Bootstrap pour les titres */
+    font-weight: 600;
+}
+
+/* Style des cartes des Tips */
+.tip-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transition pour l'effet de survol */
+}
+
+.tip-card:hover {
+    transform: translateY(-5px); /* Remonter légèrement la carte au survol */
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.175) !important; /* Ombre plus prononcée */
+}
+
+/* Pied de page */
+footer {
+    border-top: 5px solid #007bff; /* Ligne bleue au-dessus du footer */
+}

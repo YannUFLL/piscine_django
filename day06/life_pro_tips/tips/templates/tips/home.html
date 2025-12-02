@@ -1,0 +1,136 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Life Pro Tips - Optimize your daily life</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    >
+    {% block style %}
+
+    <link rel="stylesheet" href="{% static 'ex01/style1.css' %}" />
+    {% endblock %}
+
+</head>
+
+<body>
+{% block navbar %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">💡 LPT Central</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">               
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">                                                
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                {% if auth_pages %}
+                <li class="nav-item">
+                    <a class="nav-link" href="login">Connexion</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="register">Register</a>
+                </li>
+                {% else %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="logout">Logout</a>
+                </li>
+                {% endif %}
+            </ul>
+            <span class="navbar-text text-light me-3">
+                Hello {{ username|default:"Traveler" }}!
+            </span>
+        </div>
+    </div>
+</nav>
+
+{% endblock %}                                                                                                                                                                                                                                                                                                                                                             %}
+{% block content %}
+
+<div class="container mt-4">
+    <header class="p-5 mb-4 bg-light rounded-3 text-center hero-section">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">Life Pro Tips</h1>
+            <p class="col-md-8 fs-4 mx-auto">
+                Simple, clever advice to optimize your daily life and make things easier.
+            </p>
+            <button class="btn btn-primary btn-lg" type="button">Discover Top Tips</button>
+        </div>
+    </header>
+
+    <h2 class="mt-5 mb-3 text-primary border-bottom pb-2">✨ Tips of the Week</h2>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+            <div class="card h-100 shadow-sm tip-card">
+                <div class="card-body">
+                    <h5 class="card-title">Always say hello in the morning</h5>
+                    <span class="badge bg-success mb-2">Social</span>
+                    <p class="card-text">
+                        Greeting people with a smile (even those you don't know well) improves the general mood and can even make you happier. It's a small effort with a big emotional payoff.
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Seen 4.5k times</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col">
+            <div class="card h-100 shadow-sm tip-card">
+                <div class="card-body">
+                    <h5 class="card-title">The 2-Minute Rule</h5>
+                    <span class="badge bg-warning text-dark mb-2">Productivity</span>
+                    <p class="card-text">
+                        If a task takes less than two minutes to complete, do it immediately. This prevents small tasks from piling up and overwhelming you later.
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Popular!</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 shadow-sm tip-card">
+                <div class="card-body">
+                    <h5 class="card-title">Use the Time Blocking Technique</h5>
+                    <span class="badge bg-info text-dark mb-2">Organization</span>
+                    <p class="card-text">
+                        Schedule specific 'blocks' in your calendar for particular tasks. This enforces focus and reduces the temptation of inefficient multitasking.
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">New</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer class="bg-dark text-white text-center py-3 mt-5">
+    <p>&copy; 2025 LPT Central | Tips for a Better Life | <a href="#" class="text-white">Contact</a></p>
+</footer>
+
+{% endblock %}
+
+
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+  crossorigin="anonymous"
+></script>
+
+</body>
+</html>
