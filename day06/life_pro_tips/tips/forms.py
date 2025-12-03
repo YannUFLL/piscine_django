@@ -1,7 +1,7 @@
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import CustomUser
+from .models import CustomUser, Tip
 
 class RegisterForm(UserCreationForm):
     username = forms.CharField(label="Username",
@@ -27,3 +27,11 @@ class LoginForm(AuthenticationForm):
         label='Password',
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter your password'})
     )
+
+class TipForm(forms.ModelForm):
+    class Meta:
+        model = Tip
+        fields = ["content"]
+        widgets = {
+            "content": forms.Textarea(attrs={"class": "form-control", "rows": 3, "placeholder": "Share your best tips"})
+        }
