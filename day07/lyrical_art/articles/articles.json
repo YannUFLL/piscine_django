@@ -1,0 +1,95 @@
+[
+    {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+            "username": "reinhardt",
+            "password": "pbkdf2_sha256$260000$vNTx8nGlvGzZ5xLmE4J5KA$XPp3z5/0iul08VdPuvEEe3g5sUgS7bq8cc+DLu7fWus=",
+            "is_superuser": false,
+            "is_staff": false,
+            "is_active": true
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 2,
+        "fields": {
+            "username": "frankenthaler",
+            "password": "pbkdf2_sha256$260000$vNTx8nGlvGzZ5xLmE4J5KA$XPp3z5/0iul08VdPuvEEe3g5sUgS7bq8cc+DLu7fWus=",
+            "is_superuser": false,
+            "is_staff": false,
+            "is_active": true
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 3,
+        "fields": {
+            "username": "hofmann",
+            "password": "pbkdf2_sha256$260000$vNTx8nGlvGzZ5xLmE4J5KA$XPp3z5/0iul08VdPuvEEe3g5sUgS7bq8cc+DLu7fWus=",
+            "is_superuser": false,
+            "is_staff": false,
+            "is_active": true
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 4,
+        "fields": {
+            "username": "mitchell",
+            "password": "pbkdf2_sha256$260000$vNTx8nGlvGzZ5xLmE4J5KA$XPp3z5/0iul08VdPuvEEe3g5sUgS7bq8cc+DLu7fWus=",
+            "is_superuser": false,
+            "is_staff": false,
+            "is_active": true
+        }
+    },
+
+    {
+        "model": "articles.article",
+        "pk": 1,
+        "fields": {
+            "title": "Ad Reinhardt — Toward Absolute Silence",
+            "author": 1,
+            "created": "2025-01-01T10:00:00Z",
+            "synopsis": "Near-absolute blacks, radical reduction, path toward silence.",
+            "content": "Ad Reinhardt develops paintings made of nearly total black, stripped of any visual effects. He considers this extreme reduction the logical endpoint of a journey toward pure, silent, uncompromising painting."
+        }
+    },
+
+    {
+        "model": "articles.article",
+        "pk": 2,
+        "fields": {
+            "title": "Helen Frankenthaler — Fluidity and Transparency",
+            "author": 2,
+            "created": "2025-01-02T10:00:00Z",
+            "synopsis": "Fluid stains, diluted colors, stylistic transition.",
+            "content": "Helen Frankenthaler revolutionizes color with her soak-stain technique. Diluted pigments seep into raw canvas, producing an airy visual poetry that perfectly bridges Abstract Expressionism and Color Field Painting."
+        }
+    },
+
+    {
+        "model": "articles.article",
+        "pk": 3,
+        "fields": {
+            "title": "Hans Hofmann — Push and Pull",
+            "author": 3,
+            "created": "2025-01-03T10:00:00Z",
+            "synopsis": "Push and pull theory, chromatic intensity.",
+            "content": "Hans Hofmann combines expressive color with a foundational theory: push and pull. Through contrasts of color and plane, the pictorial surface breathes, stretches, and contracts, generating a unique spatial dynamism."
+        }
+    },
+
+    {
+        "model": "articles.article",
+        "pk": 4,
+        "fields": {
+            "title": "Joan Mitchell — Lyrical Energy",
+            "author": 4,
+            "created": "2025-01-04T10:00:00Z",
+            "synopsis": "Exploded colors, gestural lyricism.",
+            "content": "Joan Mitchell expresses raw emotional energy. Her broad brushstrokes and vibrant color fields embody the lyrical force of American abstraction, blending rage, light, and inner landscapes."
+        }
+    }
+]
+
