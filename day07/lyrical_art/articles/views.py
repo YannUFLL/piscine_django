@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import Article
+from django.contrib.auth import login
 from django.views.generic import (
     ListView,
     DetailView,
