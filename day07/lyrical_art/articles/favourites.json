@@ -1,0 +1,38 @@
+[
+    {"model":"articles.UserFavouriteArticle", "pk":1, "fields": {
+        "user": 1,
+        "article": 1
+    }},
+    {"model":"articles.UserFavouriteArticle", "pk":2, "fields": {
+        "user": 1,
+        "article": 2
+    }},
+    {"model":"articles.UserFavouriteArticle", "pk":3, "fields": {
+        "user": 2,
+        "article": 3
+    }},
+    {"model":"articles.UserFavouriteArticle", "pk":4, "fields": {
+        "user": 2,
+        "article": 1
+    }},
+    {"model":"articles.UserFavouriteArticle", "pk":5, "fields": {
+        "user": 3,
+        "article": 1
+    }},
+    {"model":"articles.UserFavouriteArticle", "pk":6, "fields": {
+        "user": 4,
+        "article": 1
+    }},
+    {"model":"articles.UserFavouriteArticle", "pk":7, "fields": {
+        "user": 4,
+        "article": 2
+    }},
+    {"model":"articles.UserFavouriteArticle", "pk":8, "fields": {
+        "user": 4,
+        "article": 3
+    }},
+    {"model":"articles.UserFavouriteArticle", "pk":9, "fields": {
+        "user": 4,
+        "article": 4
+    }}
+]

@@ -6,6 +6,7 @@
     <title>login</title>
 </head>
 <body>
+    <a href="{% url 'logout' %}">logout</a>
     <form method="POST">
         {% csrf_token %}
         {{ form }}

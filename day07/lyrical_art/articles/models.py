@@ -14,10 +14,10 @@ class Article(models.Model):
     def __str__(self):
         return (self.title)
 
-class UserFavoriteArticles(models.Model):
+class UserFavouriteArticle(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    user = models.ForeignKey(Article, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
 
     def __str__(self):
-        return (self.title)
+        return (self.article.title)
 
