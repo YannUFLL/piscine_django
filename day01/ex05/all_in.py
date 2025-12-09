@@ -16,7 +16,7 @@ def return_dic():
 
     return (states, capital_cities)
 
-def conditional_print_capital(word, states, capital_cites):
+def conditional_print_capital(word, states, capital_cities):
     state = states.get(word)
     if state is not None:
         print(f"{word} is the state of {capital_cities[state]}")
@@ -24,7 +24,7 @@ def conditional_print_capital(word, states, capital_cites):
     return (False)
 
 
-def conditional_print_state(word, states, capital_cites):
+def conditional_print_state(word, states, capital_cities):
     abbreviation = None 
     for abbr, city in capital_cities.items():
         if city == word:
@@ -45,20 +45,14 @@ if __name__ == "__main__":
         sys.exit(0)
     arg = sys.argv[1]
     states, capital_cities = return_dic()
-    tempword = None
-    for word in arg.replace(",", " ").split():
-        cword = word.capitalize()
-        if cword == "New":
-            tempword = "New"
-            continue
-        if tempword == "New" and cword == "Jersey":
-            cword = "New Jersey"
-            tempword = None
+    if ",," in arg:
+        sys.exit(0)
+    for word in arg.split(','):
+        split_token = word.strip().split(' ')
+        for i in range(len(split_token)):
+            split_token[i] = split_token[i].capitalize()
+        cword = ' '.join(split_token)
         if (not conditional_print_capital(cword, states, capital_cities) and
         not conditional_print_state(cword, states, capital_cities)): 
-            print(f"{cword} is neither the capital city nor a state")
+            print(f"{word} is neither a capital city nor a state")
          
-
-
-    
-        
