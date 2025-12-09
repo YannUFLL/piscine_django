@@ -1,0 +1,24 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{% block title %}Default title{% endblock %}</title>
+  </head>
+  <body>
+    <a href="{% url 'logout' %}">logout</a>
+    <nav> 
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'articles' %}">Last Articles</a>
+        {% if not user.is_authenticated %}
+        <a href="{% url 'register' %}">Register</a>
+        <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+    </nav>
+    {% block navbar %}
+    {% endblock %}
+    {% block content %}
+    <p>Default content here.</p>
+    {% endblock %}
+  </body>
+</html>

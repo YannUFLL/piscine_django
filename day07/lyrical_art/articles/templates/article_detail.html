@@ -1,27 +1,26 @@
+{% extends "base.html" %}
 
-<!DOCTYPE html>
-<html lang="en"></html>
-    <head>
-        <meta charset="utf-8">
-        <title>Articles</title>
-    </head>
-    <body>
-        <a href="{% url 'logout' %}">logout</a>
-        <table>
-            <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Synopsis</th>
-                <th>Content</th>
-                <th>Created</th>
-            </tr>
-            <tr>
-                <td>{{ article.title }}</td>
-                <td>{{ article.author }}</td>
-                <td>{{ article.synopsis }}</td>
-                <td>{{ article.content }}</td>
-                <td>{{ article.created }}</td>
-            </tr>
-        </table>
-    </body>
-</html>
+{% block title %} Articles {% endblock %}
+{% block content %}
+<a href="{% url 'logout' %}">logout</a>
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Synopsis</th>
+        <th>Content</th>
+        <th>Created</th>
+    </tr>
+    <tr>
+        <td>{{ article.title }}</td>
+        <td>{{ article.author }}</td>
+        <td>{{ article.synopsis }}</td>
+        <td>{{ article.content }}</td>
+        <td>{{ article.created }}</td>
+        <form method="POST" action="{% url 'add-favourite' article.pk %}">
+            {% csrf_token %}
+            <button type="submit">add to favourite</button>
+        </form>
+    </tr>
+</table>
+{% endblock %}
