@@ -48,7 +48,7 @@ if __name__ == "__main__":
         print(coffeeMachine.serve(beverages.Tea))
         print(coffeeMachine.serve(beverages.Coffee))
         print(coffeeMachine.serve(beverages.Chocolate))
-        print(coffeeMachine.serve(beverages.Capu))
+        print(coffeeMachine.serve(beverages.Cappuccino))
         print(coffeeMachine.serve(beverages.Coffee))
     except Exception as e: 
         print (e)
