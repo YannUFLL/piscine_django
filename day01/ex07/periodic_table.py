@@ -20,7 +20,7 @@ def parse_elements(elements):
     return (l_elements)
 
 def create_html_header():
-    h = """<!DOCTYPE html5>
+    h = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -28,11 +28,11 @@ def create_html_header():
     <style>
         table {
                 border-collapse: collapse;
-                border: 1px, solid, black;
+                border: 1px solid black;
         }
         td {
 
-                border: 1px, solid, black;
+                border: 1px solid black;
                 text-align: center;
         }
         ul {
@@ -47,6 +47,7 @@ def create_html_header():
                 font-size: 18px; 
         }
     </style>
+</head>
 <body>
 
 
@@ -54,12 +55,11 @@ def create_html_header():
     return (h)
 
 def create_footer():
-    f = """</body>"""
+    f = """</body></html>"""
     return (f)
 
 def create_table(elements): 
-    t = """<table>
-    <tr>"""
+    t = "<table>\n"
     i = 0
     elements.sort(key=lambda e: int(e["number"]))
     for row in range(7):
