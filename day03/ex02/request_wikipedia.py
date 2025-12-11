@@ -27,10 +27,16 @@ def execute():
     headers = {
         "User-Agent": "request_wikipedia.py/1.0 (https://github.com/yannUFLL)"
     }
-    response = requests.get(url, params=params, headers=headers)
-    if response.status_code != 200:
-        print(f"Error: request failed with code {response.status_code}")
+    try:
+        response = requests.get(url, params=params, headers=headers)
+    except requests.RequestException:
+        print("Error: request failed")
         sys.exit(1)
+    
+    if response.status_code != 200:
+        print(f"Error: server returned status {response.status_code}")
+        sys.exit(1)
+
     data = response.json()
     pages = data.get("query", {}).get("pages", {})
 
