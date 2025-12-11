@@ -14,6 +14,7 @@ def get_relative_url(url):
     response = requests.get(url, headers=headers)
     html = response.text
     soup = BeautifulSoup(html, "html.parser")
+    page_title = soup.find(id="firstHeading").text
     content = soup.find(id="mw-content-text")
     content_direct_child = content.find(class_="mw-parser-output")
 
@@ -38,7 +39,7 @@ def get_relative_url(url):
                     continue
                 if ":" in href :
                     continue 
-                return (href)
+                return (href, page_title)
         elif getattr(child, "name", None) == "h2":
             return (None)
         child = child.next_sibling
@@ -54,24 +55,22 @@ def execute():
 
     base_url =  "https://en.wikipedia.org"
     full_url = f'{base_url}/wiki/{first_article}?redirect=no'
-    first_url = f'{base_url}/wiki/{first_article}'
     saved_url = []
     number = 0
 
     
     while (1):
-        r_url = get_relative_url(full_url)
+        r_url, page_title = get_relative_url(full_url)
         if r_url == None:
             print("It leads to a dead end !")
             sys.exit(0)
         number += 1
         full_url = base_url + r_url + "?redirect=no"
-        title = r_url.removeprefix("/wiki/").removesuffix("?redirect=no").split("#", 1)[0]
-        if (title == "Philosophy"):
-            print(f"{number} roads from {first_url} to philosophy !")
+        if (page_title == "Philosophy"):
+            print(f"{number} roads from {first_article} to philosophy !")
             sys.exit(0)
         else:
-            print(f"{title}")
+            print(f"{page_title}")
         if full_url in saved_url: 
             print("It lead to an infinite loop !")
             sys.exit(0)
