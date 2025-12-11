@@ -4,7 +4,7 @@ import elem
 
 class Page: 
     def __init__ (self, element):
-        if not isinstance(element, Elem) or isinstance(element, Text):
+        if not isinstance(element, Elem):
             raise Exception("Error: arg is not an instance of Elem")
         self.element = element
         self._authorise_type = ["html", "head", "body",
@@ -66,7 +66,7 @@ class Page:
             pos = 0;
             for child in childs: 
                 child_tag = child.tag if isinstance(child, Elem) else "text" if isinstance(child, Text) else None
-                if tag in order:
+                if child_tag in order:
                     if order.index(child_tag) != pos: 
                         raise ValueError(f"<{tag}> wrong order in <{current_tag} need this order <{[tag for tag in order]}>")
                     else:
@@ -92,9 +92,10 @@ class Page:
         if at_least :
             q = 0
             for tag in at_least: 
-                q =+ sum(1 for c in childs if (isinstance(c, Elem) and c.tag == tag) or (isinstance(c, Text) and "text" == tag))
-                if q == 0:
-                    raise ValueError(f"<{tag}> need at least <{[tag for tag in at_least]}>")
+                q += sum(1 for c in childs if (isinstance(c, Elem) and c.tag == tag) or (isinstance(c, Text) and "text" == tag))
+            if q == 0:
+                print (f"Debug: q={q} for tag={tag} in <{current_tag}>")
+                raise ValueError(f"<{tag}> need at least <{[tag for tag in at_least]}>")
 
         exclusive = rules.get("exclusive")
         if exclusive :
@@ -105,12 +106,11 @@ class Page:
                     if isinstance(c, Elem) and c.tag == tag or isinstance(c, Text) and "text" == tag:
                         q += 1
                         if q > 1:
-                            raise ValueError(f"<{tag}> need exclusivly as a child one of: <{[tag for tag in at_least]}>")
+                            raise ValueError(f"<{tag}> need exclusivly as a child one of: <{[tag for tag in exclusive]}>")
     def is_valid(self):
         try:
             self._check_one_element(self.element)
         except ValueError as e:
-            #print (e)
             return (False)
         return (True)
     
@@ -151,10 +151,10 @@ if __name__ == "__main__":
             elem.Head(
                 elem.Title(
                     Text('"Hello ground!"'))),
-                elem.Body([
-                    elem.H1(
-                        Text('"Oh no, not again!"')),
-                    ])]))
+            elem.Body([
+                elem.H1(
+                    Text('"Oh no, not again!"')),
+                ])]))
 
     verif_page(page, "body: valid page", True)
 
@@ -185,26 +185,36 @@ if __name__ == "__main__":
     verif_page(head_after_body, "head: wrong placement after body", False)
 
     wrong_element_tag = Page(elem.Html([
-        elem.Body([ 
-            elem.H1(
-                Text('"Oh no, not again!"')),
         elem.Head(
             elem.Title(
                 elem.Elem('bad tag'))),
-            ])]))
+        elem.Body( 
+            elem.H1(
+                Text('"Oh no, not again!"')),
+            )]))
 
 
     verif_page(wrong_element_tag, "element: new with bad tag", False)
+
+    one_td_inside_tr = Page(elem.Html([
+        elem.Head(),
+        elem.Body(
+            elem.Div(
+                elem.Table(elem.Tr(elem.Td(Text("Coucou"))))))
+            ]))
+
+
+    verif_page(one_td_inside_tr, "element: one td inside tr", True)
 
     wrong_element_child = Page(elem.Html([
             elem.Head(
                 elem.Title(
                     Text('"Hello ground!"'))),
-                elem.Body([
-                    elem.Div(elem.Meta()), 
-                    elem.H1(
-                        Text('"Oh no, not again!"')),
-                    ])]))
+            elem.Body([
+                elem.Div(elem.Meta()), 
+                elem.H1(
+                    Text('"Oh no, not again!"')),
+                ])]))
 
 
     verif_page(wrong_element_child, "div: div wrong child", False)
@@ -213,12 +223,12 @@ if __name__ == "__main__":
         elem.Head(
             elem.Title(
                 Text('"Hello ground!"'))),
-            elem.Body([
-                elem.Div(elem.Span(elem.P(Text("Coucou")))),
-                elem.Div(), 
-                elem.H1(
-                    Text('"Oh no, not again!"')),
-                ])]))
+        elem.Body([
+            elem.Div(elem.Span(elem.P(Text("Coucou")))),
+            elem.Div(), 
+            elem.H1(
+                Text('"Oh no, not again!"')),
+            ])]))
 
 
     verif_page(div_inside_P, "p: good child", True)
@@ -227,13 +237,13 @@ if __name__ == "__main__":
         elem.Head(
             elem.Title(
                 Text('"Hello ground!"'))),
-            elem.Body([
-                elem.Div(
-                elem.P(elem.Div())),
-                elem.Div(), 
-                elem.H1(
-                    Text('"Oh no, not again!"')),
-                ])]))
+        elem.Body([
+            elem.Div(
+            elem.P(elem.Div())),
+            elem.Div(), 
+            elem.H1(
+                Text('"Oh no, not again!"')),
+            ])]))
 
 
     verif_page(div_inside_P, "p: wrong child", False)
@@ -242,11 +252,11 @@ if __name__ == "__main__":
         elem.Head(
             elem.Title(
                 Text('"Hello ground!"'))),
-            elem.Body([
-                elem.Span(elem.Div()), 
-                elem.H1(
-                    Text('"Oh no, not again!"')),
-                ])]))
+        elem.Body([
+            elem.Span(elem.Div()), 
+            elem.H1(
+                Text('"Oh no, not again!"')),
+            ])]))
 
 
     verif_page(div_inside_span, "span: wrong child", False)
@@ -255,11 +265,11 @@ if __name__ == "__main__":
         elem.Head(
             elem.Title(
                 Text('"Hello ground!"'))),
-            elem.Body([
-                elem.Ul(elem.Div()), 
-                elem.H1(
-                    Text('"Oh no, not again!"')),
-                ])]))
+        elem.Body([
+            elem.Ul(elem.Div()), 
+            elem.H1(
+                Text('"Oh no, not again!"')),
+            ])]))
 
 
     verif_page(ul_with_wrong_child, "ul: wrong child", False)
@@ -268,11 +278,11 @@ if __name__ == "__main__":
         elem.Head(
             elem.Title(
                 Text('"Hello ground!"'))),
-            elem.Body([
-                elem.Ul(), 
-                elem.H1(
-                    Text('"Oh no, not again!"')),
-                ])]))
+        elem.Body([
+            elem.Ul(), 
+            elem.H1(
+                Text('"Oh no, not again!"')),
+            ])]))
 
 
     verif_page(ul_without_child, "ul: no child", False)
@@ -281,11 +291,11 @@ if __name__ == "__main__":
         elem.Head(
             elem.Title(
                 Text('"Hello ground!"'))),
-            elem.Body([
-                elem.Ul(elem.Li()), 
-                elem.H1(
-                    Text('"Oh no, not again!"')),
-                ])]))
+        elem.Body([
+            elem.Ul(elem.Li()), 
+            elem.H1(
+                Text('"Oh no, not again!"')),
+            ])]))
 
 
     verif_page(ul_with_good_child, "good child", True)
@@ -294,11 +304,11 @@ if __name__ == "__main__":
         elem.Head(
             elem.Title(
                 Text('"Hello ground!"'))),
-            elem.Body([
-                elem.Table(elem.Tr(elem.Div())), 
-                elem.H1(
-                    Text('"Oh no, not again!"')),
-                ])]))
+        elem.Body([
+            elem.Table(elem.Tr(elem.Div())), 
+            elem.H1(
+                Text('"Oh no, not again!"')),
+            ])]))
 
 
     verif_page(tr_with_wrong_child, "tr: wrong child", False)
@@ -307,11 +317,11 @@ if __name__ == "__main__":
         elem.Head(
             elem.Title(
                 Text('"Hello ground!"'))),
-            elem.Body([
-                elem.Table(elem.Tr([elem.Th(), elem.Td()])), 
-                elem.H1(
-                    Text('"Oh no, not again!"')),
-                ])]))
+        elem.Body([
+            elem.Table(elem.Tr([elem.Th(), elem.Td()])), 
+            elem.H1(
+                Text('"Oh no, not again!"')),
+            ])]))
 
     verif_page(tr_with_exclusive_childs, "tr: non exclusive childs", False)
 
@@ -319,21 +329,10 @@ if __name__ == "__main__":
         elem.Head(
             elem.Title(
                 Text('"Hello ground!"'))),
-            elem.Body([
-                elem.Table(elem.Div()), 
-                elem.H1(
-                    Text('"Oh no, not again!"')),
-                ])]))
+        elem.Body([
+            elem.Table(elem.Div()), 
+            elem.H1(
+                Text('"Oh no, not again!"')),
+            ])]))
 
     verif_page(tr_with_exclusive_childs, "table: wrong child", False)
-
-
-
-
-
-
-
-
-
-    
-

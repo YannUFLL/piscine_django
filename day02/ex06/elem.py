@@ -60,7 +60,7 @@ class Elem:
             else: 
                 result += f"\n</{self.tag}>"
         elif self.tag_type == 'simple':
-            result += f"<{self.tag}{self.__make_attr()}>"
+            result += f"<{self.tag}{self.__make_attr()} />"
         return result 
 
     def __make_attr(self):
@@ -121,12 +121,12 @@ class Title(Elem):
         super().__init__("title", tag_type="double", content=content, **kwargs)
 
 class Meta(Elem):
-    def __init__(self, content=None, **kwargs):
-        super().__init__("meta", tag_type="simple", content=content, **kwargs)
+    def __init__(self, **kwargs):
+        super().__init__("meta", tag_type="simple", **kwargs)
 
 class Img(Elem):
-    def __init__(self, content=None, **kwargs):
-        super().__init__("img", tag_type="simple", content=content, **kwargs)
+    def __init__(self, **kwargs):
+        super().__init__("img", tag_type="simple", **kwargs)
 
 class Table(Elem):
     def __init__(self, content=None, **kwargs):
@@ -178,11 +178,11 @@ class Span(Elem):
 
 class Hr(Elem):
     def __init__(self, content=None, **kwargs):
-        super().__init__("hr", tag_type="double", content=content, **kwargs)
+        super().__init__("hr", tag_type="simple", content=content, **kwargs)
 
 class Br(Elem):
     def __init__(self, content=None, **kwargs):
-        super().__init__("br", tag_type="double", content=content, **kwargs)
+        super().__init__("br", tag_type="simple", content=content, **kwargs)
 
 if __name__ == '__main__':
     print(
