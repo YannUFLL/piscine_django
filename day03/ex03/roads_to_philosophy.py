@@ -1,8 +1,6 @@
 import requests
 import sys
-import json
-from bs4 import BeautifulSoup, Tag
-from html.parser import HTMLParser
+from bs4 import BeautifulSoup
 
 
 
@@ -20,7 +18,7 @@ def get_relative_url(url):
 
     redir = content_direct_child.find(class_="redirectText", recursive=True)
     if redir: 
-        return (redir.find('a', recursive=True).get("href"))
+        return (redir.find('a', recursive=True).get("href"), page_title)
 
     child = next(content_direct_child.children)
     while child:
@@ -41,9 +39,9 @@ def get_relative_url(url):
                     continue 
                 return (href, page_title)
         elif getattr(child, "name", None) == "h2":
-            return (None)
+            return (None, None)
         child = child.next_sibling
-    return (None)
+    return (None, None)
 
 def execute():
 
@@ -55,24 +53,26 @@ def execute():
 
     base_url =  "https://en.wikipedia.org"
     full_url = f'{base_url}/wiki/{first_article}?redirect=no'
+    first_title = None
     saved_url = []
     number = 0
 
     
     while (1):
         r_url, page_title = get_relative_url(full_url)
+        if not first_title:
+            first_title = page_title
         if r_url == None:
             print("It leads to a dead end !")
             sys.exit(0)
         number += 1
         full_url = base_url + r_url + "?redirect=no"
+        print(f"{page_title}")
         if (page_title == "Philosophy"):
-            print(f"{number} roads from {first_article} to philosophy !")
+            print(f"{number} roads from {first_title} to philosophy !")
             sys.exit(0)
-        else:
-            print(f"{page_title}")
         if full_url in saved_url: 
-            print("It lead to an infinite loop !")
+            print("It leads to an infinite loop !")
             sys.exit(0)
         saved_url.append(full_url)
 
