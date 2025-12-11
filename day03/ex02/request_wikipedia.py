@@ -29,7 +29,7 @@ def execute():
     }
     response = requests.get(url, params=params, headers=headers)
     if response.status_code != 200:
-        print(f"Error: request failed code {response}")
+        print(f"Error: request failed with code {response.status_code}")
         sys.exit(1)
     data = response.json()
     pages = data.get("query", {}).get("pages", {})
@@ -39,10 +39,15 @@ def execute():
         sys.exit(1)
     
     page = next(iter(pages.values()))
+
+    if "missing" in page:
+        print("Error: article not found")
+        sys.exit(1)
+
     text = page.get("extract")
 
     if not text:
-        print("Error: artile has no content")
+        print("Error: article has no content")
         sys.exit(1)
 
     clean = dewiki.from_string(text)
