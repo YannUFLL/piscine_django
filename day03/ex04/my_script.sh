@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-python3 -m venv djangoenv
-source djangoenv/bin/activate
-pip install -r requirements.txt
-$SHELL
+python3 -m venv django_venv
+source django_venv/bin/activate
+pip install -r requirement.txt
+exec $SHELL
