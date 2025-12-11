@@ -29,18 +29,15 @@ if __name__ == "__main__":
     longitude = 0.0;
 
     try:
-        float(sys.argv[1])
-    except ValueError:
-        print("Error: DOW_OPEN must be a number")
-
-    try:
         lattitude = float(sys.argv[1])
     except ValueError:
-        print("Error: DOW_OPEN must be a number")
+        print("Error: Latitude must be a number")
+        sys.exit(1)
 
     try:
         longitude = float(sys.argv[2])
     except ValueError:
         print("Error: Longitude must be a number")
+        sys.exit(1)
 
     antigravity.geohash(lattitude, longitude, '-'.join((date, dow)).encode())
