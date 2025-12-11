@@ -60,7 +60,7 @@ class Elem:
             else: 
                 result += f"\n</{self.tag}>"
         elif self.tag_type == 'simple':
-            result += f"<{self.tag}{self.__make_attr()}/>"
+            result += f"<{self.tag}{self.__make_attr()} />"
         return result 
 
     def __make_attr(self):
