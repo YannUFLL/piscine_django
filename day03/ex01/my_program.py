@@ -1,7 +1,5 @@
 from path import Path
 
-
-
 def execute():
     p = Path('giga_chad')
     p.makedirs_p()

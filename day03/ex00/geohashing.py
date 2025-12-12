@@ -14,7 +14,7 @@ def check_date_format(date):
         return (False)
     return (True)
 
-if __name__ == "__main__":
+def main():
 
     if len(sys.argv) != 5:
         print("Usage: geohashing.py lattitude longitude YYYY-MM-DD DOW_OPEN")
@@ -41,3 +41,6 @@ if __name__ == "__main__":
         sys.exit(1)
 
     antigravity.geohash(lattitude, longitude, '-'.join((date, dow)).encode())
+
+if __name__ == "__main__":
+    main()

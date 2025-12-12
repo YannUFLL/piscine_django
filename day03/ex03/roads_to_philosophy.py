@@ -2,8 +2,6 @@ import requests
 import sys
 from bs4 import BeautifulSoup
 
-
-
 def get_relative_url(url):
     
     headers = {
@@ -77,8 +75,6 @@ def execute():
         saved_url.append(full_url)
 
     sys.exit(1)
-
-    
 
 if __name__ == "__main__":
     execute()
