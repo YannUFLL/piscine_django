@@ -1,6 +1,4 @@
-from elem import Text 
-from elem import Elem
-import elem
+from elem import *
 
 class Page: 
     def __init__ (self, element):
@@ -116,7 +114,7 @@ class Page:
     
     def display_html(self):
         result = ""
-        if isinstance(self.element, elem.Html):
+        if isinstance(self.element, Html):
             result += "<!DOCTYPE html>\n"
             result += str(self.element)
             print(result)
@@ -126,7 +124,7 @@ class Page:
     def write_to_file(self, file_name):
         try:
             with open(file_name, 'w') as file:
-                if isinstance(self.element, elem.Html):
+                if isinstance(self.element, Html):
                     result = "<!DOCTYPE html>\n"
                     result += str(self.element)
                     file.write(result)
@@ -147,12 +145,12 @@ def verif_page(page, page_title, result):
 
     
 if __name__ == "__main__":
-    page = Page(elem.Html([
-            elem.Head(
-                elem.Title(
+    page = Page(Html([
+            Head(
+                Title(
                     Text('"Hello ground!"'))),
-            elem.Body([
-                elem.H1(
+            Body([
+                H1(
                     Text('"Oh no, not again!"')),
                 ])]))
 
@@ -162,176 +160,176 @@ if __name__ == "__main__":
     x = "\033[31mERROR \u2718\033[0m"
     print(f"\n\n\033[01m ----- Test: write to file ----- {v if page.write_to_file('page.html') else x} \n\033[0m")
 
-    body_in_body = Page(elem.Html([
-        elem.Head(
-            elem.Title(
+    body_in_body = Page(Html([
+        Head(
+            Title(
                 Text('"Hello ground!"'))),
-            elem.Body([elem.Body(), 
-                elem.H1(
+            Body([Body(), 
+                H1(
                     Text('"Oh no, not again!"')),
                 ])]))
         
     verif_page(body_in_body, "body: another body as child", False)
 
-    head_after_body = Page(elem.Html([
-        elem.Body([ 
-            elem.H1(
+    head_after_body = Page(Html([
+        Body([ 
+            H1(
                 Text('"Oh no, not again!"')),
-        elem.Head(
-            elem.Title(
+        Head(
+            Title(
                 Text('"Hello ground!"'))),
             ])]))
 
     verif_page(head_after_body, "head: wrong placement after body", False)
 
-    wrong_element_tag = Page(elem.Html([
-        elem.Head(
-            elem.Title(
-                elem.Elem('bad tag'))),
-        elem.Body( 
-            elem.H1(
+    wrong_element_tag = Page(Html([
+        Head(
+            Title(
+                Elem('bad tag'))),
+        Body( 
+            H1(
                 Text('"Oh no, not again!"')),
             )]))
 
 
     verif_page(wrong_element_tag, "element: new with bad tag", False)
 
-    one_td_inside_tr = Page(elem.Html([
-        elem.Head(),
-        elem.Body(
-            elem.Div(
-                elem.Table(elem.Tr(elem.Td(Text("Coucou"))))))
+    one_td_inside_tr = Page(Html([
+        Head(),
+        Body(
+            Div(
+                Table(Tr(Td(Text("Coucou"))))))
             ]))
 
 
     verif_page(one_td_inside_tr, "element: one td inside tr", True)
 
-    wrong_element_child = Page(elem.Html([
-            elem.Head(
-                elem.Title(
+    wrong_element_child = Page(Html([
+            Head(
+                Title(
                     Text('"Hello ground!"'))),
-            elem.Body([
-                elem.Div(elem.Meta()), 
-                elem.H1(
+            Body([
+                Div(Meta()), 
+                H1(
                     Text('"Oh no, not again!"')),
                 ])]))
 
 
     verif_page(wrong_element_child, "div: div wrong child", False)
 
-    div_inside_P = Page(elem.Html([
-        elem.Head(
-            elem.Title(
+    div_inside_P = Page(Html([
+        Head(
+            Title(
                 Text('"Hello ground!"'))),
-        elem.Body([
-            elem.Div(elem.Span(elem.P(Text("Coucou")))),
-            elem.Div(), 
-            elem.H1(
+        Body([
+            Div(Span(P(Text("Coucou")))),
+            Div(), 
+            H1(
                 Text('"Oh no, not again!"')),
             ])]))
 
 
     verif_page(div_inside_P, "p: good child", True)
 
-    div_inside_P = Page(elem.Html([
-        elem.Head(
-            elem.Title(
+    div_inside_P = Page(Html([
+        Head(
+            Title(
                 Text('"Hello ground!"'))),
-        elem.Body([
-            elem.Div(
-            elem.P(elem.Div())),
-            elem.Div(), 
-            elem.H1(
+        Body([
+            Div(
+            P(Div())),
+            Div(), 
+            H1(
                 Text('"Oh no, not again!"')),
             ])]))
 
 
     verif_page(div_inside_P, "p: wrong child", False)
 
-    div_inside_span = Page(elem.Html([
-        elem.Head(
-            elem.Title(
+    div_inside_span = Page(Html([
+        Head(
+            Title(
                 Text('"Hello ground!"'))),
-        elem.Body([
-            elem.Span(elem.Div()), 
-            elem.H1(
+        Body([
+            Span(Div()), 
+            H1(
                 Text('"Oh no, not again!"')),
             ])]))
 
 
     verif_page(div_inside_span, "span: wrong child", False)
 
-    ul_with_wrong_child = Page(elem.Html([
-        elem.Head(
-            elem.Title(
+    ul_with_wrong_child = Page(Html([
+        Head(
+            Title(
                 Text('"Hello ground!"'))),
-        elem.Body([
-            elem.Ul(elem.Div()), 
-            elem.H1(
+        Body([
+            Ul(Div()), 
+            H1(
                 Text('"Oh no, not again!"')),
             ])]))
 
 
     verif_page(ul_with_wrong_child, "ul: wrong child", False)
 
-    ul_without_child = Page(elem.Html([
-        elem.Head(
-            elem.Title(
+    ul_without_child = Page(Html([
+        Head(
+            Title(
                 Text('"Hello ground!"'))),
-        elem.Body([
-            elem.Ul(), 
-            elem.H1(
+        Body([
+            Ul(), 
+            H1(
                 Text('"Oh no, not again!"')),
             ])]))
 
 
     verif_page(ul_without_child, "ul: no child", False)
 
-    ul_with_good_child = Page(elem.Html([
-        elem.Head(
-            elem.Title(
+    ul_with_good_child = Page(Html([
+        Head(
+            Title(
                 Text('"Hello ground!"'))),
-        elem.Body([
-            elem.Ul(elem.Li()), 
-            elem.H1(
+        Body([
+            Ul(Li()), 
+            H1(
                 Text('"Oh no, not again!"')),
             ])]))
 
 
     verif_page(ul_with_good_child, "good child", True)
 
-    tr_with_wrong_child = Page(elem.Html([
-        elem.Head(
-            elem.Title(
+    tr_with_wrong_child = Page(Html([
+        Head(
+            Title(
                 Text('"Hello ground!"'))),
-        elem.Body([
-            elem.Table(elem.Tr(elem.Div())), 
-            elem.H1(
+        Body([
+            Table(Tr(Div())), 
+            H1(
                 Text('"Oh no, not again!"')),
             ])]))
 
 
     verif_page(tr_with_wrong_child, "tr: wrong child", False)
 
-    tr_with_exclusive_childs = Page(elem.Html([
-        elem.Head(
-            elem.Title(
+    tr_with_exclusive_childs = Page(Html([
+        Head(
+            Title(
                 Text('"Hello ground!"'))),
-        elem.Body([
-            elem.Table(elem.Tr([elem.Th(), elem.Td()])), 
-            elem.H1(
+        Body([
+            Table(Tr([Th(), Td()])), 
+            H1(
                 Text('"Oh no, not again!"')),
             ])]))
 
     verif_page(tr_with_exclusive_childs, "tr: non exclusive childs", False)
 
-    table_with_wrong_child = Page(elem.Html([
-        elem.Head(
-            elem.Title(
+    table_with_wrong_child = Page(Html([
+        Head(
+            Title(
                 Text('"Hello ground!"'))),
-        elem.Body([
-            elem.Table(elem.Div()), 
-            elem.H1(
+        Body([
+            Table(Div()), 
+            H1(
                 Text('"Oh no, not again!"')),
             ])]))
 
