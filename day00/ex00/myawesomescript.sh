@@ -1,1 +1,2 @@
-curl -sI http://bit.ly/3J5KvWX | grep -i "^location" | cut -d ' ' -f2
+#!/bin/sh
+curl -sI $1 | grep -i "^location" | cut -d ' ' -f2
