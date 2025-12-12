@@ -14,8 +14,7 @@ def return_file_text(arg):
         sys.exit(1)
 
 
-
-if __name__ == '__main__':
+def main():
     nbr_arg = len(sys.argv)
     if (nbr_arg != 2):
         print("Wrong arguments number")
@@ -30,6 +29,5 @@ if __name__ == '__main__':
         html_file.write(new_string)
     print(f"File '{new_file_name}.html' generated successfully.")
 
-
-
-
+if __name__ == '__main__':
+    main()
