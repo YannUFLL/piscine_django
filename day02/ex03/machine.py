@@ -6,12 +6,11 @@ class CoffeeMachine:
         self.obsolescence = 0
 
     class EmptyCup(beverages.HotBeverage):
-        def __init__(self):
-            self.name = "empty cup"
-            self.price = 0.90
+        name = "empty cup"
+        price = 0.90
 
         def description(self):
-            return ("An empty cup ?! Gimme my money back!")
+            return ("An empty cup?! Gimme my money back!")
 
     class BrokenMachineException(Exception):
         def __init__(self):
