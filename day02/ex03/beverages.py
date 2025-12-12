@@ -44,7 +44,11 @@ class Cappuccino(HotBeverage):
     def description(self):
         return ("Un po' di Italia nella sua tazza!")
 
-if __name__ == "__main__":
+def test():
+    print("=== BEVERAGES TESTS ===")
     for beverage in [HotBeverage(), Coffee(), Tea(), Chocolate(), Cappuccino()]:
             print(beverage)
             print()
+
+if __name__ == "__main__":
+    test()

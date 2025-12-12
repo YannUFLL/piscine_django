@@ -29,7 +29,8 @@ class CoffeeMachine:
         else:
             return (self.EmptyCup())
 
-if __name__ == "__main__":
+def test():
+    print("=== COFFEE MACHINE TESTS ===")
     coffeeMachine = CoffeeMachine()
     hotBeverages =  [beverages.HotBeverage, beverages.Coffee, beverages.Tea, beverages.Chocolate, beverages.Cappuccino]
     try:
@@ -52,3 +53,7 @@ if __name__ == "__main__":
         print(coffeeMachine.serve(beverages.Coffee))
     except Exception as e: 
         print (e)
+
+if __name__ == "__main__":
+    test()
+ 
