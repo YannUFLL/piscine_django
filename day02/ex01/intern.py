@@ -14,8 +14,9 @@ class Intern:
 
     def make_coffee(self):
         return (self.Coffee())
-
-if __name__ == "__main__":
+    
+def test():
+    print("=== INTERN TESTS ===")
     try:
         intern1 = Intern()
         intern2 = Intern("MarK")
@@ -27,3 +28,7 @@ if __name__ == "__main__":
         intern1.work()
     except Exception as e: 
         print("An error has occured:", e)
+
+if __name__ == "__main__":
+    test()
+ 
