@@ -84,20 +84,19 @@ def create_table(elements):
     t+= "</table>\n"
     return (t)
 
-
-
 def generate_html(elements):
     html = create_html_header()
     html += create_table(elements)
     html += create_footer()
     return (html)
 
-
-
-if __name__ == "__main__":
+def main():
     elements = read_file("periodic_table.txt")
     dic = parse_elements(elements)
     html = generate_html(dic)
     with open("periodic_table.html", "w") as file :
         file.write(html)
 
+if __name__ == "__main__":
+    main()
+ 

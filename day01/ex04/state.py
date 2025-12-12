@@ -16,7 +16,7 @@ def return_dic():
 
     return (states, capital_cities)
 
-if __name__ == "__main__":
+def main():
     nb_args = len(sys.argv)
     if nb_args != 2: 
         sys.exit(0)
@@ -34,6 +34,10 @@ if __name__ == "__main__":
             if abbr == abbreviation:
                 print(state)
                 break
+
+if __name__ == "__main__":
+    main()
+
 
     
         

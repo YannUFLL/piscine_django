@@ -38,8 +38,7 @@ def conditional_print_state(word, states, capital_cities):
                 print(f"{word} is the capital of {state}")
                 return (True)
 
-
-if __name__ == "__main__":
+def main():
     nb_args = len(sys.argv)
     if nb_args != 2: 
         sys.exit(0)
@@ -55,4 +54,9 @@ if __name__ == "__main__":
         if (not conditional_print_capital(cword, states, capital_cities) and
         not conditional_print_state(cword, states, capital_cities)): 
             print(f"{word} is neither a capital city nor a state")
-         
+
+
+
+if __name__ == "__main__":
+    main()
+

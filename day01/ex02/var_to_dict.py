@@ -36,7 +36,11 @@ def print_dictionnary(d):
     for year in sorted(d.keys()):
         print(year, ":", ' '.join(d[year]))
 
-if __name__ == "__main__":
+def main():
     td = create_tuples_data()
     d = convert_tuples_to_dictionnary(td)
     print_dictionnary(d)
+
+
+if __name__ == "__main__":
+    main()

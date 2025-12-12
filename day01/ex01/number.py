@@ -1,3 +1,8 @@
+def main():
+    numbers_list =  extract_numbers()
+    for number in numbers_list: 
+        print(number)
+
 
 def extract_numbers():
     try:
@@ -8,6 +13,4 @@ def extract_numbers():
         print("File not found")
 
 if __name__ == "__main__":
-    numbers_list =  extract_numbers()
-    for number in numbers_list: 
-        print(number)
+    main()
