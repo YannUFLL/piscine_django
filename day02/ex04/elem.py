@@ -105,7 +105,7 @@ class Elem:
                                                 for elem in content])))
 
 
-if __name__ == '__main__':
+def test():
     print(
         Elem("html",tag_type="double", content=[
             Elem("head", tag_type="double", content=
@@ -115,9 +115,6 @@ if __name__ == '__main__':
                     Elem("h1", tag_type="double", content=
                         Text('"Oh no, not again!"')),
                     Elem("img", tag_type="simple", attr={"src":"http://i.imgur.com/pfp3T.jpg"})])]))
-    print(Text(">"))
-    print(Elem())
-    try:
-        Elem(content=1)
-    except Exception as e: 
-        print(type(e) == Elem.ValidationError)
+
+if __name__ == '__main__':
+    test()
