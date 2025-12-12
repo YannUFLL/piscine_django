@@ -22,7 +22,6 @@ class Coffee(HotBeverage):
 
 class Tea(HotBeverage):
 
-    price = 0.30
     name = "tea"
 
     def description(self):
