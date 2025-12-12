@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 python3 -m venv django_venv
 source django_venv/bin/activate
