@@ -4,18 +4,64 @@
 <html lang="en">
   <head>
     <title>{% block title %}Default title{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet">
   </head>
-  <body>
-    <a href="{% url 'logout' %}">logout</a>
-    <nav> 
-        <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'articles' %}">Last Articles</a>
-        {% if not user.is_authenticated %}
-        <a href="{% url 'register' %}">Register</a>
-        <a href="{% url 'login' %}">Login</a>
+  <body class="container">
+      <div class="col-12 d-flex align-items-baseline gap-3 mt-5 mb-3 border-bottom">
+        <h1>Articles</h1>
+        <h5 class="text-muted fw-normal">Share your writings</h5>
+      </div>
+    {% block navbar %}
+    <nav class="navbar navbar-dark bg-dark rounded navbar-expand-lg p-1"> 
+      <ul class="navbar-nav  ">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'home' %}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journals" viewBox="0 0 16 16">
+            <path d="M5 0h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2 2 2 0 0 1-2 2H3a2 2 0 0 1-2-2h1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1H1a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v9a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1H3a2 2 0 0 1 2-2"/>
+            <path d="M1 6v-.5a.5.5 0 0 1 1 0V6h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V9h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 2.5v.5H.5a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1H2v-.5a.5.5 0 0 0-1 0"/>
+            </svg>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'articles' %}">Articles</a>
+        </li>
+        <li class="nav-item"> 
+        <a class="nav-link" href="{% url 'register' %}">Register</a>
+        </li>
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'favourites' %}">Favourites</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'publications' %}">Publications</a>
+        </li>
+        <li class="align-items-baseline ">
+          <p >Logged as {{ request.user }}</p>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'logout' %}" class="ms-auto">logout</a>
+        </li>
+        </ul>
+        {% else %}
+        </ul>
+        {% if messages %}
+          {% for message in messages %}
+            <div class="error">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+        <form method="POST" action="{% url 'login' %}" class="d-flex align-items-center ms-auto gap-1 pe-4">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.path }}">
+          <label for="{{menu_login_form.username.id_for_label}}" class="visually-hidden">Username</label>
+          {{ menu_login_form.username }}
+          <label for="{{menu_login_form.password.id_for_label}}" class="visually-hidden">Password</label>
+          {{ menu_login_form.password }}
+          <button class="btn btn-sm btn-light" type="submit">login</button>
+        </form>
         {% endif %}
     </nav>
-    {% block navbar %}
     {% endblock %}
     {% block content %}
     <p>Default content here.</p>

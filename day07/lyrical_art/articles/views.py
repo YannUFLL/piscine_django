@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from .models import Article, UserFavouriteArticle
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,6 +12,8 @@ from django.views.generic import (
 )
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.urls import reverse_lazy
+from django.contrib import messages
+from .forms import CustomAuthenticationForm
 
 
 
@@ -20,6 +22,7 @@ class ArticlesListView(ListView):
     model = Article
     template_name = "articles.html"
     context_object_name = "articles"
+    ordering = ["-created"]
 
 class HomeRedirectView(RedirectView):
     pattern_name = "articles"
@@ -92,9 +95,19 @@ class RegisterView(CreateView):
 
 class LoginView(FormView):
     template_name = "login.html"
-    form_class = AuthenticationForm
+    form_class = CustomAuthenticationForm
     success_url = reverse_lazy("home")
 
     def form_valid(self, form):
         login(self.request, form.get_user())
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        for error in form.non_field_errors():
+            messages.error(self.request, error)
+        next_url = (
+            self.request.POST.get("next")
+            or self.request.GET.get("next")
+            or self.success_url
+        )
+        return redirect(next_url)

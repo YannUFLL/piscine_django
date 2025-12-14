@@ -1,21 +1,23 @@
 {% extends "base.html" %}
 {% block title %} Articles {% endblock %}
 {% block content %}
-<table>
+<table class="table">
     <tr>
         <th>Title</th>
         <th>Author</th>
         <th>Synopsis</th>
-        <th>Content</th>
         <th>Created</th>
+        <th>Publish since</th>
     </tr>
     {% for article in articles %}
     <tr>
-        <td><a href="{% url 'article-detail' article.pk %}">{{ article.title }}</a></td>
+        <td>{{ article.title }}</td>
         <td>{{ article.author }}</td>
-        <td>{{ article.synopsis }}</td>
-        <td>{{ article.content }}</td>
+        <td>{{ article.synopsis | truncatechars:20 }}</td>
         <td>{{ article.created }}</td>
+        <td>{{ article.created|timesince }} ago</td>
+        <td><a class="btn btn-primary" href="{% url 'article-detail' article.pk %}">Read</a></td>
+
     </tr>
     {% endfor %}
 </table>
