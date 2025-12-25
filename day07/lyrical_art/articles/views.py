@@ -13,7 +13,7 @@ from django.views.generic import (
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.urls import reverse_lazy
 from django.contrib import messages
-from .forms import CustomAuthenticationForm
+from .forms import CustomAuthenticationForm, AddToFavouriteForm
 
 
 
@@ -34,18 +34,20 @@ class LogoutView(RedirectView):
         logout(request)
         return super().get(request, *args, **kwargs)
 
-class AddFavouriteView(LoginRequiredMixin, RedirectView):
+class AddFavouriteView(LoginRequiredMixin, CreateView):
     pattern_name = "favourites"
+    model = UserFavouriteArticle
+    form_class = AddToFavouriteForm
 
-    def get_redirect_url(self, *args, **kwargs):
-        article = get_object_or_404(Article, pk=kwargs["pk"])
+    def form_valid(self, form):
+        article = get_object_or_404(Article, pk=self.kwargs["pk"])
 
         UserFavouriteArticle.objects.get_or_create(
             user=self.request.user,
             article=article
         )
-
-        return super().get_redirect_url(*args)
+        self.object = article
+        return redirect("favourites")
 
 class FavouritesView(LoginRequiredMixin, ListView):
     model = UserFavouriteArticle
@@ -54,7 +56,7 @@ class FavouritesView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return  Article.objects.filter(userfavouritearticle__user=self.request.user)
 
-class PublishView(CreateView):
+class PublishView(LoginRequiredMixin, CreateView):
     model = Article
     template_name = "publish.html"
     fields = ["title", "synopsis", "content"]
@@ -80,6 +82,7 @@ class RegisterView(CreateView):
     template_name = "register.html"
     form_class = UserCreationForm
     success_url = reverse_lazy("home")
+    redirect_url = reverse_lazy("home")
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -92,6 +95,11 @@ class RegisterView(CreateView):
         login(self.request, user)
 
         return response
+    
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect(self.redirect_url)
+        return super().dispatch(request, *args, **kwargs)
 
 class LoginView(FormView):
     template_name = "login.html"

@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block titles %} Publish {% endblock %}
 
-{% block content }
+{% block content %}
 <form method="POST">
     {% csrf_token %}
     {{ form }}
-    <button type="submit">Send</button>
+    <button type="submit">{% trans "Send" %}</button>
 </form>
 {% endblock %}

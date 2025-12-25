@@ -1,23 +1,25 @@
 {% extends "base.html" %}
+{% load i18n %}
+
+
 {% block title %} Articles {% endblock %}
 {% block content %}
 <table class="table">
     <tr>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Synopsis</th>
-        <th>Created</th>
-        <th>Publish since</th>
+        <th>{% trans "Title" %}</th>
+        <th>{% trans "Synopsis" %}</th>
+        <th>{% trans "Writer" %}</th>
+        <th>{% trans "Created" %}</th>
+        <th>{% trans "When" %}</th>
     </tr>
     {% for article in articles %}
     <tr>
-        <td>{{ article.title }}</td>
+        <td style="width:20%">{{ article.title }}</td>
+        <td style="width:50%">{{ article.synopsis | truncatechars:20 }}</td>
         <td>{{ article.author }}</td>
-        <td>{{ article.synopsis | truncatechars:20 }}</td>
         <td>{{ article.created }}</td>
         <td>{{ article.created|timesince }} ago</td>
-        <td><a class="btn btn-primary" href="{% url 'article-detail' article.pk %}">Read</a></td>
-
+        <td><a class="btn btn-info text-white" href="{% url 'article-detail' article.pk %}">Read</a></td>
     </tr>
     {% endfor %}
 </table>

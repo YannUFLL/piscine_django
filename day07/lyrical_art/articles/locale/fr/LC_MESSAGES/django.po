@@ -1,0 +1,83 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-23 22:50+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: articles/forms.py:9 articles/templates/base.html:63
+msgid "Password"
+msgstr "Mot de passe"
+
+#: articles/templates/articles.html:9
+msgid "Title"
+msgstr "Titre"
+
+#: articles/templates/articles.html:10
+msgid "Synopsis"
+msgstr "Résumé"
+
+#: articles/templates/articles.html:11
+msgid "Writer"
+msgstr "Auteur"
+
+#: articles/templates/articles.html:12
+msgid "Created"
+msgstr "Crée"
+
+#: articles/templates/articles.html:13
+msgid "When"
+msgstr "Date"
+
+#: articles/templates/base.html:20
+msgid "Share your writings"
+msgstr "Partagez vos écrits"
+
+#: articles/templates/base.html:31
+msgid "Articles"
+msgstr "Articles"
+
+#: articles/templates/base.html:36
+msgid "Favourites"
+msgstr "Favoris"
+
+#: articles/templates/base.html:39
+msgid "Publications"
+msgstr "Publications"
+
+#: articles/templates/base.html:42
+msgid "Logged as"
+msgstr "Connecté en tant que"
+
+#: articles/templates/base.html:45
+msgid "Logout"
+msgstr "Déconnexion"
+
+#: articles/templates/base.html:50
+msgid "Register"
+msgstr "S'enregistrer"
+
+#: articles/templates/base.html:61
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: articles/templates/base.html:65
+msgid "Login"
+msgstr "Connexion"
+
+#: articles/templates/publish.html:10
+msgid "Send"
+msgstr "Envoyer"
