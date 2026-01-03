@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Lobby</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="{% static 'chat/style.css' %}" />
+  </head>
+  <body>
+    <h1>Let's chat</h1>
+    <div style="display: flex; flex-direction: row">
+      <div>
+        <h2>Chat:</h2>
+        <div id="messages"></div>
+      </div>
+      <div style="margin-left: 1em">
+        <h2>Connected users:</h2>
+        <div id="users"></div>
+      </div>
+    </div>
+    <form id="form"><input type="text" name="message" /></form>
+    <script type="text/javascript">
+      $(function () {
+        let url = `ws://${window.location.host}/ws/socket-server/`
+        const chatSocket = new WebSocket(url)
+
+        chatSocket.onmessage = function (e) {
+          let data = JSON.parse(e.originalEvent ? e.originalEvent.data : e.data)
+
+          if (data.type === 'chat' || data.type === 'server') {
+            let msgClass = data.type === 'chat' ? 'msg-chat' : 'msg-server'
+
+            let html = `<div class="${msgClass}">
+                            <p>
+                            ${
+                              data.type === 'chat'
+                                ? `<strong>${data.username}</strong>`
+                                : ''
+                            }
+                            ${data.message}
+                            </p>
+                        </div>`
+
+            $('#messages').append(html)
+
+            $('#messages').animate(
+              {
+                scrollTop: $('#messages')[0].scrollHeight,
+              },
+              100
+            )
+          } else if (data.type === 'user_join') {
+            console.log('OK')
+            $('#users').append(`<p>${data.username}</p>`)
+          } else if (data.type === 'user_leave') {
+            $('#users p')
+              .filter(function () {
+                console.log('VALUE', $(this).text())
+                return $(this).text() === data.username
+              })
+              .remove()
+          } else if (data.type === 'user_list') {
+            $('#users').empty()
+            data.users.forEach((u) => {
+              $('#users').append(`<p>${u}</p>`)
+            })
+          }
+        }
+
+        $('#form').on('submit', function (e) {
+          e.preventDefault()
+          let message = $(this).find('[name="message"]').val()
+          chatSocket.send(JSON.stringify({ message: message }))
+          this.reset()
+        })
+      })
+    </script>
+  </body>
+</html>

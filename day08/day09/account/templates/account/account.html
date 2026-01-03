@@ -1,0 +1,90 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{% block title %}Default title{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  </head>
+  <body class="container-fluid px-3">
+    <div id="account-root">
+      <div id="login-view" {% if request.user.is_authenticated %}style="display:none"{% endif %}>
+        <form id="login-form" method="post">
+          {{ form.as_p }}
+          <button type="submit">Login</button>
+        </form>
+        <div id="errors"></div>
+      </div>
+
+      <div id="logged-view" {% if not request.user.is_authenticated %}style="display:none"{% endif %}>
+        <p>Logged as <strong id="username">{{ request.user.username }}</strong></p>
+        <button id="logout-btn" type="button">Logout</button>
+      </div>
+    </div>
+
+    <script>
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.startsWith(name + "=")) {
+            cookieValue = decodeURIComponent(cookie.slice(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    $.ajaxSetup({
+      beforeSend: function (xhr, settings) {
+        const method = (settings.type || "").toUpperCase();
+        const csrfSafe = /^(GET|HEAD|OPTIONS|TRACE)$/.test(method);
+        if (!csrfSafe) {
+          xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+        }
+      }
+    });
+    </script>
+      <script>
+      $(function () {
+        $("#login-form").on("submit", function (e) {
+          e.preventDefault();
+          $.post("/account/login/", $(this).serialize())
+            .done(function (data) {
+              $("#login-view").hide(); $("#logged-view").show(); $("#username").text(data.username);
+            })
+            .fail(function (xhr) {
+              const errors = xhr.responseJSON?.errors;
+              let html = "";
+
+              if (!errors) {
+                $("#errors").text("Unknown error.");
+                return;
+              }
+
+              for (const field in errors) {
+                errors[field].forEach(msg => {
+                  html += `<div>${msg}</div>`;
+                });
+              }
+
+              $("#errors").html(html);
+            });
+        });
+        $(document).on("click", "#logout-btn", function () {
+          $.post("/account/logout/")
+            .done(function () {
+              $("#logged-view").hide(); $("#login-view").show(); $("#errors").empty();
+            });
+        });
+      });
+    </script>
+  </body>
+</html>
