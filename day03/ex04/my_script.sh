@@ -8,4 +8,4 @@ python3 -m venv django_venv
 
 echo "Environment is ready. Switching to interactive mode..."
 
-exec bash --rcfile <(echo "source ~/.bashrc; source django_venv/bin/activate"
+exec bash --rcfile <(echo "source ~/.bashrc; source django_venv/bin/activate")
