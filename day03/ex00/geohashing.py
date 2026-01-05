@@ -17,7 +17,7 @@ def check_date_format(date):
 def main():
 
     if len(sys.argv) != 5:
-        print("Usage: geohashing.py lattitude longitude YYYY-MM-DD DOW_OPEN")
+        print("Usage: geohashing.py latitude longitude YYYY-MM-DD DOW_OPEN")
         sys.exit(1)
 
     date, dow = sys.argv[3], sys.argv[4]
@@ -25,11 +25,11 @@ def main():
     if not check_date_format(date):
         sys.exit(1)
     
-    lattitude = 0.0;
+    latitude = 0.0;
     longitude = 0.0;
 
     try:
-        lattitude = float(sys.argv[1])
+        latitude = float(sys.argv[1])
     except ValueError:
         print("Error: Latitude must be a number")
         sys.exit(1)
@@ -40,7 +40,7 @@ def main():
         print("Error: Longitude must be a number")
         sys.exit(1)
 
-    antigravity.geohash(lattitude, longitude, '-'.join((date, dow)).encode())
+    antigravity.geohash(latitude, longitude, '-'.join((date, dow)).encode())
 
 if __name__ == "__main__":
     main()

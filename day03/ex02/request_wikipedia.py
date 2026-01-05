@@ -13,12 +13,13 @@ def execute():
     
 
     url = 'https://fr.wikipedia.org/w/api.php'
-    params =  {
+    params = {
         "action": "query",
-        "prop": "extracts",
         "format": "json",
         "titles": title,
-        "explaintext": 1,
+        "prop": "revisions",
+        "rvprop": "content",
+        "rvslots": "main",
         "redirects": 1
     }
 
@@ -40,30 +41,29 @@ def execute():
     data = response.json()
     pages = data.get("query", {}).get("pages", {})
 
-    if not pages: 
-        print("Error: no result found")
-        sys.exit(1)
-    
-    page = next(iter(pages.values()))
+    page_id = next(iter(pages))
+    page = pages[page_id]
 
-    if "missing" in page:
+    if page_id == "-1" or "missing" in page:
         print("Error: article not found")
         sys.exit(1)
 
-    text = page.get("extract")
-
-    if not text:
-        print("Error: article has no content")
+    try:
+        wikitext = page.get("revisions")[0].get("slots").get("main").get("*")
+    except (KeyError, IndexError, TypeError):
+        print("Error: could not find the text content")
         sys.exit(1)
-
-    clean = dewiki.from_string(text)
-
-    with open(file_name, "w") as file:
-        file.write(clean)
-
-    print(f"Article saved to {file_name}")
-
     
+    clean = dewiki.from_string(wikitext)
+    real_title = page.get("title", title)
+    file_name = title.replace(" ", "_") + ".wiki"
+
+    try:
+        with open(file_name, "w", encoding='utf-8') as file:
+            file.write(clean.strip())
+        print(f"Article saved to {file_name}")
+    except Exception as e:
+        print(f"Error writing file: {e}")
 
 if __name__ == "__main__":
     execute()
