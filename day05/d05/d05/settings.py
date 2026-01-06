@@ -87,9 +87,9 @@ WSGI_APPLICATION = 'd05.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'formationdb',
-        'USER': 'student',
-        'PASSWORD': 'student',
+        'NAME': 'djangotraining',
+        'USER': 'djangouser',
+        'PASSWORD': 'secret',
         'HOST': 'localhost',
         'PORT': '5432'
     }
