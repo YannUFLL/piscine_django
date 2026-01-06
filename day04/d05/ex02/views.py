@@ -7,6 +7,7 @@ from django.utils import timezone
 def form_view(request):
     path_log = settings.LOG_FILE
 
+    entries = ""
     if os.path.exists(path_log):
         with open(path_log, "r") as log_file:
             entries = log_file.readlines()
