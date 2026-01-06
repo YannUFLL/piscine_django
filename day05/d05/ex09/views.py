@@ -5,6 +5,7 @@ from django.http import HttpResponse
 # Create your views here.
 
 def display(request):
+    try: 
         people = People.objects.select_related('homeworld').all()
         list_e = []
         html = """
@@ -16,7 +17,6 @@ def display(request):
 </tr>
 """
         for p in people:
-            print(p)
             if p.homeworld is not None:
                 climate = p.homeworld.climate or "" 
             else:
@@ -29,7 +29,7 @@ def display(request):
             return (HttpResponse("""No data available, 
             please use the following command line before use:
             <br>
-            python manage.py loaddata your_file.json"""))
+            python manage.py loaddata ex09/ex09_initial_data.json"""))
 
         for p in list_e:
                 html += f"""
@@ -41,3 +41,8 @@ def display(request):
 """
         html += "</table>"
         return (HttpResponse(html))
+    except Exception: 
+        return (HttpResponse("""No data available, 
+            please use the following command line before use:
+            <br>
+            python manage.py loaddata ex09/ex09_initial_data.json"""))

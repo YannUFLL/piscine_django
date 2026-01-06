@@ -102,10 +102,10 @@ def display(request):
         <table>
             <tr>
                 <th>
-                    <p>Title</p>
+                    <p>Episode</p>
                 </th>
                 <th>
-                    <p>Episode</p>
+                    <p>Title</p>
                 </th>
                  <th>
                     <p>Director</p>

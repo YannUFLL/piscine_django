@@ -132,11 +132,16 @@ def display(request):
 </tr>
 """
         for row in rows:
-            print(row[2])
+            if row[2] is None:
+                continue
             if "windy" in row[2] or "moderate windy" in row[2]:
                 tuples.append(row)
             sorted(tuples, key=lambda x: x[0])
 
+        if not tuples:
+            raise("No data available")
+
+        print("Coucou")
         for tuple in tuples:
                 html += f"""
 <tr>

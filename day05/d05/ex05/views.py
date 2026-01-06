@@ -55,11 +55,12 @@ def display(request):
     <td>{movie.title}</td>
     <td>{movie.director}</td>
     <td>{movie.producer}</td>
+    <td>{movie.release_date}</td>
     <td>{movie.opening_crawl if movie.opening_crawl else ""}</td>
 <tr>
 """
         
-    html += "/table"
+    html += "</table>"
     return HttpResponse(html)
 
 def remove(request):

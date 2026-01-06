@@ -166,7 +166,9 @@ def display(request):
     except Exception as e: 
         if conn:
             conn.close()
-        return HttpResponse(f"Error: {e}")
+        if cur:
+            cur.close()
+        return HttpResponse(f"No data available")
 
 def update(request):
     try:

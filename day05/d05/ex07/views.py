@@ -39,11 +39,11 @@ def display(request):
     html =  """
 <table>
     <tr>
-        <th>episode_nb</th>
-        <th>title</th>
-        <th>producer</th>
-        <th>director</th>
-        <th>release_date</th>
+        <th>Episode_nb</th>
+        <th>Title</th>
+        <th>Producer</th>
+        <th>Director</th>
+        <th>Release_date</th>
         <th>Opening</th>
         <th>Created</th>
         <th>Updated</th>
