@@ -84,7 +84,7 @@ def upvotetip(request):
         if tip:
             user = request.user
             if user in tip.downvotes.all():
-                tip.downvotes.remove(user
+                tip.downvotes.remove(user)
                 tip.author.reputation += 2
                 tip.author.save()
             if user in tip.upvotes.all():
