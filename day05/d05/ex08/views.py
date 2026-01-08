@@ -62,40 +62,48 @@ def populate(request):
                                 host=settings.DATABASES["default"]["HOST"],
                                 port=settings.DATABASES["default"]["PORT"])
         cur = con.cursor() 
+        result = ""
 
         with open('./ex08/planets.csv') as f:
             reader = csv.reader(f, delimiter='\t')
             for row in reader:
-                cur.execute("""
-                INSERT INTO ex08_planets (name, climate, diameter, orbital_period, population, rotation_period, surface_water, terrain) VALUES
-                            (%s, %s, %s, %s, %s, %s, %s, %s )""", (
-                                sql_value(row[0]),
-                                sql_value(row[1]),
-                                sql_value(row[2]),
-                                sql_value(row[3]),
-                                sql_value(row[4]),
-                                sql_value(row[5]),
-                                sql_value(row[6]),
-                                sql_value(row[7])
-                            ))
-                con.commit()
+                try: 
+                    cur.execute("""
+                    INSERT INTO ex08_planets (name, climate, diameter, orbital_period, population, rotation_period, surface_water, terrain) VALUES
+                                (%s, %s, %s, %s, %s, %s, %s, %s )""", (
+                                    sql_value(row[0]),
+                                    sql_value(row[1]),
+                                    sql_value(row[2]),
+                                    sql_value(row[3]),
+                                    sql_value(row[4]),
+                                    sql_value(row[5]),
+                                    sql_value(row[6]),
+                                    sql_value(row[7])
+                                ))
+                    con.commit()
+                except Exception as e:
+                    result += f"Planet {row[0]}: Error, {e}"
+                result += f"Planet {row[0]}: OK"
         with open('./ex08/people.csv') as f:
             reader = csv.reader(f, delimiter='\t')
             for row in reader:
-                print(row)
-                cur.execute("""
-                INSERT INTO ex08_people (name, birth_year, gender, eye_color, hair_color, height, mass, homeworld) VALUES
-                            (%s, %s, %s, %s, %s, %s, %s, %s )""", (
-                                sql_value(row[0]),
-                                sql_value(row[1]),
-                                sql_value(row[2]),
-                                sql_value(row[3]),
-                                sql_value(row[4]),
-                                sql_value(row[5]),
-                                sql_value(row[6]),
-                                sql_value(row[7])
-                            ))
-                con.commit()
+                try:
+                    cur.execute("""
+                    INSERT INTO ex08_people (name, birth_year, gender, eye_color, hair_color, height, mass, homeworld) VALUES
+                                (%s, %s, %s, %s, %s, %s, %s, %s )""", (
+                                    sql_value(row[0]),
+                                    sql_value(row[1]),
+                                    sql_value(row[2]),
+                                    sql_value(row[3]),
+                                    sql_value(row[4]),
+                                    sql_value(row[5]),
+                                    sql_value(row[6]),
+                                    sql_value(row[7])
+                                ))
+                    con.commit()
+                except Exception as e:
+                    result += f"Person {row[0]}: Error, {e}"
+                result += f"Person {row[0]}: OK"
         cur.close()
         con.close()
         return (HttpResponse("OK"))
@@ -108,7 +116,6 @@ def populate(request):
 
 def display(request):
     try:
-
         con = psycopg2.connect(database=settings.DATABASES["default"]["NAME"],
                             user=settings.DATABASES["default"]["USER"],
                             password=settings.DATABASES["default"]["PASSWORD"],
@@ -141,7 +148,6 @@ def display(request):
         if not tuples:
             raise("No data available")
 
-        print("Coucou")
         for tuple in tuples:
                 html += f"""
 <tr>

@@ -31,7 +31,7 @@ def init(request):
         conn.close()
         
         return HttpResponse('OK')
-    except Exception as e: 
+    except Exception as e :
         return HttpResponse(f"Error: {e}")
         
 def populate(request):
@@ -66,16 +66,18 @@ def populate(request):
             try: 
                 cur.execute(query, movie) 
                 conn.commit()
-                result = "OK"
+                result += f"{movie[1]}: OK<br>"
             except Exception as e:
                 conn.rollback()
-                result = f"{movie[1]}: {e}"
+                result += f"{movie[1]}: Error, {e}<br>"
         cur.close()
         conn.close()
 
         return HttpResponse(result)
 
     except Exception as e:
+        if cur:
+            cur.close()
         if conn:
             conn.close()
         return HttpResponse(f"Error: {e}")
@@ -134,9 +136,11 @@ def display(request):
         return HttpResponse(html)
 
     except Exception as e: 
+        if cur:
+            cur.close()
         if conn:
             conn.close()
-        return HttpResponse(f"Error: {e}")
+        return HttpResponse(f"No data available")
 
 def remove(request):
     try:

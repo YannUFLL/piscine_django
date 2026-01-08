@@ -90,10 +90,10 @@ def populate(request):
             try: 
                 cur.execute(query, movie) 
                 conn.commit()
-                result = "OK"
+                result += f"{movie[1]}: OK<br>"
             except Exception as e:
                 conn.rollback()
-                result = f"{movie[1]}: {e}"
+                result += f"{movie[1]}: Error, {e}<br>"
         cur.close()
         conn.close()
 
@@ -189,4 +189,4 @@ def update(request):
         titles = [row[0] for row in rows]
         return (render(request, "ex06/opening_crawl.html", {'movies': titles}))
     except Exception as e:
-        return (HttpResponse(f"No data available  {type(e).__name__}: {e}"))
+        return (HttpResponse(f"No data available"))

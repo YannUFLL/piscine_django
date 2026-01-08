@@ -25,47 +25,50 @@ def populate(request):
                 producer=movie[3],
                 release_date=movie[4]
             )
-        result = 'OK'
+        result += f"{movie[1]}: OK<br>"
     except IntegrityError as e:
-        result += f"{movie[1]}: {e}"
+        result += f"{movie[1]}: Error, {e}<br>"
 
     return HttpResponse(result)
 
 def display(request):
-    movies = Movies.objects.all()
-    if not movies:
-        return HttpResponse("No data available")
+    try:
+        movies = Movies.objects.all()
+        if not movies:
+            return HttpResponse("No data available")
 
-    html =  """
-<table>
+        html =  """
+    <table>
+        <tr>
+            <th>Episode_nb</th>
+            <th>Title</th>
+            <th>Producer</th>
+            <th>Director</th>
+            <th>Release_date</th>
+            <th>Opening</th>
+            <th>Created</th>
+            <th>Updated</th>
+        </tr>
+    """
+
+        for movie in movies:
+            html += f"""
     <tr>
-        <th>Episode_nb</th>
-        <th>Title</th>
-        <th>Producer</th>
-        <th>Director</th>
-        <th>Release_date</th>
-        <th>Opening</th>
-        <th>Created</th>
-        <th>Updated</th>
-    </tr>
-"""
-
-    for movie in movies:
-        html += f"""
-<tr>
-    <td>{movie.episode_nb}</td>
-    <td>{movie.title}</td>
-    <td>{movie.producer}</td>
-    <td>{movie.director}</td>
-    <td>{movie.release_date}</td>
-    <td>{movie.opening_crawl if movie.opening_crawl else ""}</td>
-    <td>{movie.created}</td>
-    <td>{movie.updated}</td>
-<tr>
-"""
-        
-    html += "</table>"
-    return HttpResponse(html)
+        <td>{movie.episode_nb}</td>
+        <td>{movie.title}</td>
+        <td>{movie.producer}</td>
+        <td>{movie.director}</td>
+        <td>{movie.release_date}</td>
+        <td>{movie.opening_crawl if movie.opening_crawl else ""}</td>
+        <td>{movie.created}</td>
+        <td>{movie.updated}</td>
+    <tr>
+    """
+            
+        html += "</table>"
+        return HttpResponse(html)
+    except Exception:
+        return HttpResponse("No data available")
 
 def update(request):
     try:
