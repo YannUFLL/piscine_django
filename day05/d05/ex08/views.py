@@ -25,7 +25,7 @@ def init(request):
                             population BIGINT, 
                             rotation_period INTEGER,
                             surface_water REAL,
-                            terrain TEXT
+                            terrain VARCHAR(128)
                     )""" )
         con.commit()
         cursor.execute("""CREATE TABLE IF NOT EXISTS ex08_people (
