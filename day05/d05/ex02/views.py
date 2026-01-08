@@ -67,7 +67,7 @@ def populate(request):
             try: 
                 cur.execute(query, movie) 
                 conn.commit()
-                result += f"{movie[1]: OK}<br>"
+                result += f"{movie[1]}: OK<br>"
             except Exception as e:
                 conn.rollback()
                 result += f"{movie[1]}: Error, {e}<br>"

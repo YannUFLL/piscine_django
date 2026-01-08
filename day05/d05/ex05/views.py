@@ -73,6 +73,8 @@ def remove(request):
         if request.method == "POST":
             movie = Movies.objects.filter(title=request.POST["movie"]).delete()
         titles = Movies.objects.values_list("title", flat=True)
+        if titles.exist() == False:
+            raise Exception("No data available")
         return (render(request, "ex04/select.html", {"movies": titles}))
     except Exception as e:
         return (HttpResponse("No data available"))

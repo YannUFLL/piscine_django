@@ -15,9 +15,8 @@ def populate(request):
     ]
 
     result = ""
-
-    try:
-        for movie in movies:
+    for movie in movies:
+        try:
             Movies.objects.create(
                 episode_nb=movie[0],
                 title=movie[1],
@@ -25,9 +24,9 @@ def populate(request):
                 producer=movie[3],
                 release_date=movie[4]
             )
-        result += f"{movie[1]}: OK<br>"
-    except IntegrityError as e:
-        result += f"{movie[1]}: Error, {e}<br>"
+            result += f"{movie[1]}: OK<br>"
+        except Exception as e:
+            result += f"{movie[1]}: Error, {e}<br>"
 
     return HttpResponse(result)
 
@@ -73,8 +72,12 @@ def display(request):
 def update(request):
     try:
         if request.method == "POST":
-            movie = Movies.objects.filter(title=request.POST["movie"]).update(opening_crawl=request.POST["opening_crawl"])
+            movie = Movies.objects.get(title=request.POST["movie"])
+            movie.opening_crawl = request.POST["opening_crawl"]
+            movie.save()
         titles = Movies.objects.values_list("title", flat=True)
+        if titles.exists() == False:
+            raise Exception("No data available")
         return (render(request, "ex07/opening_crawl.html", {"movies": titles}))
     except Exception as e:
         return (HttpResponse("No data available"))

@@ -33,4 +33,4 @@ def form(request):
             genders = People.objects.values_list("gender", flat=True).distinct()
             return (render(request, "ex10/movie_filter.html", {"peoples":[], "genders":genders}))
     except Exception as e: 
-            return(HttpResponse(e))
+            return(HttpResponse("No data available"))

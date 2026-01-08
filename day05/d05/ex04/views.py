@@ -92,7 +92,7 @@ def display(request):
             port=settings.DATABASES['default']['PORT'])
         
         cur = conn.cursor()
-        query = "SELECT * FROM ex02_movies"
+        query = "SELECT * FROM ex04_movies"
         cur.execute(query)
         rows = cur.fetchall()
         if not rows:
