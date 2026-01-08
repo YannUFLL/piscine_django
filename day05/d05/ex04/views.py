@@ -158,6 +158,8 @@ def remove(request):
         query = "SELECT title FROM ex04_movies"
         cur.execute(query)
         titles = cur.fetchall()
+        if not titles:
+            raise Exception("No data available")
         tab_titles = []
         for title in titles:
             tab_titles.append(title[0])

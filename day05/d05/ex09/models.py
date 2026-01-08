@@ -3,7 +3,7 @@ from django.db import models
 
 class Planets(models.Model):
     name = models.CharField(unique=True, max_length=64, null=False)
-    climate = models.TextField(null=True)
+    climate = models.CharField(null=True)
     diameter = models.IntegerField(null=True)
     orbital_period = models.IntegerField(null=True)
     population = models.BigIntegerField(null=True)
@@ -24,9 +24,15 @@ class People(models.Model):
     hair_color = models.CharField(max_length=32, null=True)
     height = models.IntegerField(null=True)
     mass = models.FloatField(null=True )
-    homeworld = models.ForeignKey(Planets, to_field="id", on_delete=models.CASCADE, null = True)
-    created = models.DateTimeField(auto_now_add=True, null = timezone.now)
-    updated = models.DateTimeField(auto_now=True, null = timezone.now())
+    homeworld = models.ForeignKey(
+        Planets, 
+        to_field="name",       
+        db_column="homeworld", 
+        on_delete=models.CASCADE,
+        null=True
+    )
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name

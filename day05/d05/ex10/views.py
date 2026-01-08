@@ -12,7 +12,6 @@ def form(request):
             max_release = request.POST["max_release_date"]
             min_diameter = int(request.POST["min_diameter"])
             gender = request.POST["gender"]
-            print(gender)
             movies = Movies.objects.filter(  release_date__gte=min_release,
                                             release_date__lte=max_release,
                                             characters__homeworld__diameter__gte=min_diameter,
@@ -28,6 +27,8 @@ def form(request):
                                         {c.homeworld if c.homeworld else 'Unkmown'} -
                                         {c.homeworld.diameter if c.homeworld else 'Unkmown'}""")
             genders = People.objects.values_list("gender", flat=True).distinct()
+            if genders.exists() == False:
+                 raise Exception()
             return (render(request, "ex10/movie_filter.html", {"peoples":people_str, "genders":genders}))
         else:
             genders = People.objects.values_list("gender", flat=True).distinct()

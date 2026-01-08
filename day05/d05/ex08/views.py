@@ -81,9 +81,10 @@ def populate(request):
                                     sql_value(row[7])
                                 ))
                     con.commit()
+                    result += f"Planet {row[0]}: OK<br>"
                 except Exception as e:
-                    result += f"Planet {row[0]}: Error, {e}"
-                result += f"Planet {row[0]}: OK"
+                    con.rollback()
+                    result += f"Planet {row[0]}: Error, {e}<br>"
         with open('./ex08/people.csv') as f:
             reader = csv.reader(f, delimiter='\t')
             for row in reader:
@@ -101,12 +102,13 @@ def populate(request):
                                     sql_value(row[7])
                                 ))
                     con.commit()
+                    result += f"Person {row[0]}: OK<br>"
                 except Exception as e:
-                    result += f"Person {row[0]}: Error, {e}"
-                result += f"Person {row[0]}: OK"
+                    con.rollback()
+                    result += f"Person {row[0]}: Error, {e}<br>"
         cur.close()
         con.close()
-        return (HttpResponse("OK"))
+        return (HttpResponse(result))
     except Exception as e:
         if cur:
             cur.close() 

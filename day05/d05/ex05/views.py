@@ -16,8 +16,8 @@ def populate(request):
 
     result = ""
 
-    try:
-        for movie in movies:
+    for movie in movies:
+        try:
             Movies.objects.create(
                 episode_nb=movie[0],
                 title=movie[1],
@@ -25,11 +25,9 @@ def populate(request):
                 producer=movie[3],
                 release_date=movie[4]
             )
-        result += f"{movie[1]}: OK<br>"
-    except IntegrityError as e:
-        result += f"{movie[1]}: Error, {e}<br>"
-    except Exception as e : 
-        return HttpResponse(f"Error : {e}")
+            result += f"{movie[1]}: OK<br>"
+        except Exception as e:
+            result += f"{movie[1]}: Error, {e}<br>"
     return HttpResponse(result)
 
 def display(request):

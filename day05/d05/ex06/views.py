@@ -186,6 +186,8 @@ def update(request):
         query = f'SELECT title FROM ex06_movies'
         cur.execute(query)
         rows = cur.fetchall()
+        if rows == []:
+            raise Exception("No data available")
         titles = [row[0] for row in rows]
         return (render(request, "ex06/opening_crawl.html", {'movies': titles}))
     except Exception as e:
