@@ -106,8 +106,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-USERNAME_LIST = ["Claude", "Arbre", "Chene_mou", "Obliterateur_de_tulipe", "Eclair_blanc", "Sourdine_vocale","TheBigBangDuNoyau", "PetitPlouffe", "y", "pseudoStyle"]
-
+USERNAME_LIST = [
+    "Claude", 
+    "Arbre", 
+    "Chene_mou", 
+    "Obliterateur_de_tulipe", 
+    "Eclair_blanc", 
+    "Sourdine_vocale",
+    "TheBigBangDuNoyau", 
+    "PetitPlouffe", 
+    "Anonyme_Masque",
+    "pseudoStyle"
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/

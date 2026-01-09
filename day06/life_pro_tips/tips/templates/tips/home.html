@@ -49,7 +49,7 @@
             </ul>
             <span class="navbar-text text-light me-3">
                 Hello {{ username|default:"Traveler" }}  
-                {% if reputation %} 
+                {% if reputation is not None%} 
                 [{{reputation}}] 
                 {% endif %}!
             </span>
@@ -70,55 +70,6 @@
             <!-- <button class="btn btn-primary btn-lg" type="button">Discover Top Tips</button> -->
         </div>
     </header>
-
-    <h2 class="mt-5 mb-3 text-primary border-bottom pb-2">✨ Tips of the Week</h2>
-
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div class="col">
-            <div class="card h-100 shadow-sm tip-card">
-                <div class="card-body">
-                    <h5 class="card-title">Always say hello in the morning</h5>
-                    <span class="badge bg-success mb-2">Social</span>
-                    <p class="card-text">
-                        Greeting people with a smile (even those you don't know well) improves the general mood and can even make you happier. It's a small effort with a big emotional payoff.
-                    </p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Seen 4.5k times</small>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col">
-            <div class="card h-100 shadow-sm tip-card">
-                <div class="card-body">
-                    <h5 class="card-title">The 2-Minute Rule</h5>
-                    <span class="badge bg-warning text-dark mb-2">Productivity</span>
-                    <p class="card-text">
-                        If a task takes less than two minutes to complete, do it immediately. This prevents small tasks from piling up and overwhelming you later.
-                    </p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Popular!</small>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card h-100 shadow-sm tip-card">
-                <div class="card-body">
-                    <h5 class="card-title">Use the Time Blocking Technique</h5>
-                    <span class="badge bg-info text-dark mb-2">Organization</span>
-                    <p class="card-text">
-                        Schedule specific 'blocks' in your calendar for particular tasks. This enforces focus and reduces the temptation of inefficient multitasking.
-                    </p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">New</small>
-                </div>
-            </div>
-        </div>
-    </div>
     <h2 class="mt-5 mb-3 text-primary border-bottom pb-2">🕮 All tips </h2>
     <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for tip in tips %}
