@@ -15,7 +15,7 @@
     >
     {% block style %}
 
-    <link rel="stylesheet" href="{% static 'ex01/style1.css' %}" />
+    <link rel="stylesheet" href="{% static 'tips/style.css' %}" />
     {% endblock %}
 
 </head>
@@ -124,37 +124,58 @@
     {% for tip in tips %}
         <div class="col">
             <div class="card h-100 shadow-sm tip-card">
+            
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <span>
+                        <strong>{{ tip.author.username }}</strong> 
+                        <small class="text-primary">({{ tip.author.reputation }} rep)</small>
+                    </span>
+                    {% if user.is_authenticated %}
+                        {% if user == tip.author or user.can_delete_tips or perms.tips.delete_tip %}
+                            <form method="POST" action="deltip">
+                                {% csrf_token %}
+                                <input type="hidden" name="tip_id" value="{{tip.id}}">
+                                <button type="submit" class="btn-close position-absolute top-0 end-0 m-2" aria-label="Close"></button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                   
+                </div>
+
                 <div class="card-body ">
-                    <form method="POST" action="deltip">
-                        {% csrf_token %}
-                    <input type="hidden" name="tip_id" value="{{tip.id}}">
-                    <button class="btn-close position-absolute top-0 end-0 m-2"></button>
-                    </form>
+
                     <p class="card-text">
                         {{tip.content}}
                     </p>
                 </div>
                 <div class="card-footer d-flex justify-content-between align-items-center">
                     <!-- <small class="text-muted">Seen 4.5k times</small> -->
-                    <div class="d-flex">
-                        <form method="POST" action="upvotetip">
+            {% if user.is_authenticated %}
+                <div class="d-flex">
+                    <form method="POST" action="upvotetip">
                         {% csrf_token %}
-                            <input type="hidden" name="tip_id" value="{{tip.id}}">
-                            <button class="btn btn-sm btn-light border-0"> {{tip.upvotes.count}} 👍 </button>
-                        </form>
-                        <form method="POST" action="downvotetip">
+                        <input type="hidden" name="tip_id" value="{{tip.id}}">
+                        <button class="btn btn-sm btn-light border-0"> {{tip.upvotes.count}} 👍 </button>
+                    </form>
+                    <form method="POST" action="downvotetip">
                         {% csrf_token %}
-                            <input type="hidden" name="tip_id" value="{{tip.id}}">
-                            <button class="btn btn-sm btn-light border-0"> {{tip.downvotes.count}}👎 </button>
-                        </form>
-                    </div>
+                        <input type="hidden" name="tip_id" value="{{tip.id}}">
+                        <button class="btn btn-sm btn-light border-0"> {{tip.downvotes.count}} 👎 </button>
+                    </form>
+                </div>
+            {% else %}
+                <div class="d-flex text-muted px-2">
+                    <small>{{tip.upvotes.count}} 👍  {{tip.downvotes.count}} 👎</small>
+                </div>
+            {% endif %}
+                    <small class="text-muted ">{{ tip.date|date:"d M Y H:i" }}</small>
                 </div>
             </div>
         </div>
     {% endfor %}
     </div>
 
-{% if tipform %}
+{% if user.is_authenticated %}
     <h2 class="mt-5 mb-3 text-primary border-bottom pb-2">🖊️ Publish your own tips !</h2>
 <form method="POST" class="mb-4" action="addtip">
     {% csrf_token %}
@@ -186,7 +207,6 @@
     </button>
 </form>
 {% endif %}
-
 
 </div>
 
