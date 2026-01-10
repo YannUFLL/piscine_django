@@ -66,3 +66,14 @@
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+.msg-me {
+  background-color: #0c7eff;
+  align-self: flex-end;     
+  border-bottom-right-radius: 2px;
+  color: #ffffff;
+}
+
+.msg-me strong {
+  display: none; 
+}
