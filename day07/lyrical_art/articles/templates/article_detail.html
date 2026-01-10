@@ -3,8 +3,7 @@
 
 {% block title %} Articles {% endblock %}
 {% block content %}
-<a href="{% url 'logout' %}">logout</a>
-<table>
+<table class="table">
     <tr>
         <th>Title</th>
         <th>Author</th>
@@ -18,10 +17,11 @@
         <td>{{ article.synopsis }}</td>
         <td>{{ article.content }}</td>
         <td>{{ article.created }}</td>
-        <form method="POST" action="{% url 'add-favourite' article.pk %}">
-            {% csrf_token %}
-            <button type="submit">add to favourite</button>
-        </form>
+
     </tr>
 </table>
+<form method="POST" action="{% url 'add-favourite' article.pk %}">
+    {% csrf_token %}
+    <button type="submit">add to favourite</button>
+</form>
 {% endblock %}

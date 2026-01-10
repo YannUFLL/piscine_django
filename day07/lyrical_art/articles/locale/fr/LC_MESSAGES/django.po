@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-23 22:50+0000\n"
+"POT-Creation-Date: 2026-01-10 15:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: articles/forms.py:9 articles/templates/base.html:63
+#: articles/forms.py:8 articles/templates/base.html:68
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: articles/forms.py:10 articles/forms.py:12 articles/templates/base.html:70
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -39,42 +43,42 @@ msgid "Created"
 msgstr "Crée"
 
 #: articles/templates/articles.html:13
-msgid "When"
-msgstr "Date"
+msgid "Published since"
+msgstr "Publié depuis"
 
-#: articles/templates/base.html:20
+#: articles/templates/articles.html:22
+msgid "Read"
+msgstr "Lire"
+
+#: articles/templates/base.html:27
 msgid "Share your writings"
 msgstr "Partagez vos écrits"
 
-#: articles/templates/base.html:31
+#: articles/templates/base.html:38
 msgid "Articles"
 msgstr "Articles"
 
-#: articles/templates/base.html:36
+#: articles/templates/base.html:43
 msgid "Favourites"
 msgstr "Favoris"
 
-#: articles/templates/base.html:39
+#: articles/templates/base.html:46
 msgid "Publications"
 msgstr "Publications"
 
-#: articles/templates/base.html:42
+#: articles/templates/base.html:49
 msgid "Logged as"
 msgstr "Connecté en tant que"
 
-#: articles/templates/base.html:45
+#: articles/templates/base.html:52
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: articles/templates/base.html:50
+#: articles/templates/base.html:57
 msgid "Register"
 msgstr "S'enregistrer"
 
-#: articles/templates/base.html:61
-msgid "Username"
-msgstr "Nom d'utilisateur"
-
-#: articles/templates/base.html:65
+#: articles/templates/base.html:72
 msgid "Login"
 msgstr "Connexion"
 

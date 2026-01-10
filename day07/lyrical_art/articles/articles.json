@@ -43,7 +43,6 @@
             "is_active": true
         }
     },
-
     {
         "model": "articles.article",
         "pk": 1,
@@ -55,7 +54,6 @@
             "content": "Ad Reinhardt develops paintings made of nearly total black, stripped of any visual effects. He considers this extreme reduction the logical endpoint of a journey toward pure, silent, uncompromising painting."
         }
     },
-
     {
         "model": "articles.article",
         "pk": 2,
@@ -67,7 +65,6 @@
             "content": "Helen Frankenthaler revolutionizes color with her soak-stain technique. Diluted pigments seep into raw canvas, producing an airy visual poetry that perfectly bridges Abstract Expressionism and Color Field Painting."
         }
     },
-
     {
         "model": "articles.article",
         "pk": 3,
@@ -79,7 +76,6 @@
             "content": "Hans Hofmann combines expressive color with a foundational theory: push and pull. Through contrasts of color and plane, the pictorial surface breathes, stretches, and contracts, generating a unique spatial dynamism."
         }
     },
-
     {
         "model": "articles.article",
         "pk": 4,
@@ -90,6 +86,16 @@
             "synopsis": "Exploded colors, gestural lyricism.",
             "content": "Joan Mitchell expresses raw emotional energy. Her broad brushstrokes and vibrant color fields embody the lyrical force of American abstraction, blending rage, light, and inner landscapes."
         }
+    },
+    {
+        "model": "articles.article",
+        "pk": 5,
+        "fields": {
+            "title": "Joan Mitchell — The Last Paintings",
+            "author": 4,
+            "created": "2025-01-05T10:00:00Z",
+            "synopsis": "Vibrant yellow, late style, legacy of nature.",
+            "content": "In her final years, Mitchell's palette shifted toward incandescent yellows. These works, often huge diptychs, reflect her enduring dialogue with the French landscape and the passage of time."
+        }
     }
 ]
-

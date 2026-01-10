@@ -4,21 +4,20 @@
 
 {% block title %} Publication {% endblock %}
 {% block content %}
-<a href="{% url 'logout' %}">logout</a>
 <a href="{% url 'publish' %}">publish</a>
-<table>
+<table class="table">
     <tr>
         <th>Title</th>
-        <th>Author</th>
         <th>Synopsis</th>
+        <th>Created</th>
         <th>Detail</th>
     </tr>
     {% for article in articles %}
     <tr>
         <td>{{ article.title }}</td>
-        <td>{{ article.author }}</td>
         <td>{{ article.synopsis }}</td>
-        <td><a href="{% url 'article-detail' article.pk %}">{{ article.title }}</a></td>
+        <td>{{ article.created|date:"Y-m-d H:i" }}</td>
+        <td><a href="{% url 'article-detail' article.pk %}">View details</a></td>
     </tr>
     {% endfor %}
 </table>

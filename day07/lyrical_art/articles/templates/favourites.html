@@ -4,22 +4,9 @@
 
 {% block title %} Favourites {% endblock %}
 {% block content %} 
-<table>
-    <tr>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Synopsis</th>
-        <th>Content</th>
-        <th>Created</th>
-    </tr>
+<ul>
     {% for article in articles %}
-    <tr>
-        <td><a href="{% url 'article-detail' article.pk %}">{{ article.title }}</a></td>
-        <td>{{ article.author }}</td>
-        <td>{{ article.synopsis }}</td>
-        <td>{{ article.content }}</td>
-        <td>{{ article.created }}</td>
-    </tr>
+        <li><a href="{% url 'article-detail' article.pk %}">{{ article.title }}</a></li>
     {% endfor %}
-</table>
+</ul>
 {% endblock %}
