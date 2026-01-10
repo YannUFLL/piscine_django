@@ -1,0 +1,4 @@
+django
+daphne
+channels
+psycopg2-binary
