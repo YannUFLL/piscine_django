@@ -29,6 +29,10 @@
         let url = `ws://${window.location.host}/ws/socket-server/{{ room_name }}/`
         const chatSocket = new WebSocket(url)
 
+        window.addEventListener('beforeunload', function () {
+        chatSocket.close();
+    });
+
         chatSocket.onmessage = function (e) {
           let data = JSON.parse(e.originalEvent ? e.originalEvent.data : e.data)
 

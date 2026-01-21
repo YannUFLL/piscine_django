@@ -27,31 +27,36 @@ class chatConsumer(WebsocketConsumer):
             self.accept()
             
             current_users = list(connected_users.get(self.room_group_name, []))
+            uniques_users = list(set(current_users))
             self.send(json.dumps({
                 "type":"user_list",
-                "users": current_users}
+                "users": uniques_users}
             ))
-            connected_users.setdefault(self.room_group_name, set()).add(user.username)
-            async_to_sync(self.channel_layer.group_send)(self.room_group_name,
-            {
-                "type":"user_join",
-                "username":user.username
-            }
-            )
-
+            connected_users.setdefault(self.room_group_name, []).append(user.username)
+            if (current_users.count(user.username) == 0):
+                async_to_sync(self.channel_layer.group_send)(self.room_group_name,
+                {
+                    "type":"user_join",
+                    "username":user.username
+                }
+                )
             history = chat_history.get(self.room_group_name, [])
             for event in history:
                 self.send(text_data=json.dumps(event))
-            join_event = {
-                "type": "server_message",
-                "username": user.username,
-                "message": f"{user.username} has joined the chat",
-            }
-            self._store_event(join_event)
-            async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name,
-            join_event
-        )
+
+            print(current_users.count(user.username) )
+            print("USER JOIN")
+            if (current_users.count(user.username) == 0):
+                join_event = {
+                    "type": "server_message",
+                    "username": user.username,
+                    "message": f"{user.username} has joined the chat",
+                }
+                self._store_event(join_event)
+                async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                join_event
+                )
         else:
             self.close() 
 
@@ -86,19 +91,21 @@ class chatConsumer(WebsocketConsumer):
         }))
 
     def disconnect(self, close_code):
-        connected_users[self.room_group_name].discard(self.scope["user"].username)
-        async_to_sync(self.channel_layer.group_send)(self.room_group_name,
-        {
-            "type":"user_leave",
-            "username":self.scope["user"].username
-        })
-        async_to_sync(self.channel_layer.group_send)(self.room_group_name,
-        {
-            "type":"server_message",
-            "username":self.scope['user'].username,
-            "message": f"{self.scope['user'].username} has left the chat"
-        }
-        )
+        print("USER DISCONNECTED")
+        connected_users[self.room_group_name].remove(self.scope["user"].username)
+        if (connected_users[self.room_group_name].count(self.scope["user"].username) <= 0):
+            async_to_sync(self.channel_layer.group_send)(self.room_group_name,
+            {
+                "type":"user_leave",
+                "username":self.scope["user"].username
+            })
+            left_event =   {
+                "type":"server_message",
+                "username":self.scope['user'].username,
+                "message": f"{self.scope['user'].username} has left the chat"
+            }
+            async_to_sync(self.channel_layer.group_send)(self.room_group_name, left_event)
+        
         async_to_sync(self.channel_layer.group_discard)(
             self.room_group_name,
             self.channel_name,
